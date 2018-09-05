@@ -1,0 +1,69 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">Banking
+            </h1>
+        </div>
+	</div>
+	<div class="row">
+  <div class="col-lg-6">
+	  <h4 name="balance" ng-show="currentBalance">Balance: {{currentBalance | currency}}</h4>
+<h3> Transfer Funds from Bank to StockMock</h3>
+<div class="input-group input-group-lg">
+  <span class="input-group-addon">$</span>
+  <input ng-model="withdrawAmount" type="number" class="form-control" onkeydown="javascript: return (event.keyCode == 69 || event.keyCode == 189 || event.keyCode == 190 || event.keyCode == 187 || event.keyCode == 109 || event.keyCode == 110 || event.keyCode == 107) ? false : true" placeholder="Amount">
+  <span class="input-group-addon">.00</span>
+  <button name="withdrawSubmit" type="submit" class="form-control" ng-click="withdraw(withdrawAmount)">Submit</button>
+</div>
+</div>
+</div>
+<br>
+<div class="row">
+  <div class="col-lg-6">
+<h3> Transfer Funds from StockMock to Bank</h3>
+<div class="input-group input-group-lg">
+  <span class="input-group-addon">$</span>
+  <input ng-model="depositAmount" type="number" class="form-control" onkeydown="javascript: return (event.keyCode == 69 || event.keyCode == 189 || event.keyCode == 190 || event.keyCode == 187 || event.keyCode == 109 || event.keyCode == 110 || event.keyCode == 107) ? false : true" placeholder="Amount">
+  <span class="input-group-addon">.00</span>
+  <button name="depositSubmit" type="submit" class="form-control" ng-click="deposit(depositAmount)">Submit</button>
+</div>
+</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-lg-6">
+<h3> How to link your bank account: </h3>
+<p>
+If you do business with a major bank (Bank of America, Wells Fargo, etc), it’s easy to link your bank account!
+</p>
+<p>
+To link your major bank:
+</p>
+<ul>
+<li> Go to your account menu </li>
+<li> Tap on Banking </li>
+<li> Tap on Linked Accounts </li>
+<li> Tap on Add New Account </li>
+<li> Choose your bank from the list of major banks or scroll down and tap on "More Banks" to search for your bank </li>
+<li> Enter your online banking username and password </li>
+<li> Choose which account you'd like linked </li>
+</ul>
+</div></div>
+
+<br>
+<div class="row">
+  <div class="col-lg-6">
+<h4> Here's a short video on linking bank account on Robinhood, a famous stock market app: </h4>
+</div></div>
+<!-- Video -->
+<br>
+<div class="row responsive text-center">
+<center>
+	<video name="banktutorial" src="bank.mp4" style="max-width:800px" width="100%" height="450" controls></video>
+</center>
+</div>
+<br>
+
+</div>

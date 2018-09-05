@@ -1,0 +1,33 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">Glossary
+            </h1>
+        </div>
+
+</div>
+<div class = "row">
+<div class="col-lg-12">
+<div class="row" ng-repeat="section in FAQs"  id="{{camelCase(section.header)}}">
+<div class="list-group" ng-repeat="question in section.questions">
+<!-- <h4 class="list-group-item-heading">List group item heading</h4>
+    <p class="list-group-item-text">...</p> -->
+    <div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">{{section.header}}</div>
+  <div class="panel-body">
+    <p>{{question.a}}</p>
+  </div>
+    <!--
+  <dl>
+    <dt>{{camelCase(section.header)}}</dt>
+    <dd>{{question.a}}</dd>
+  </dl> -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

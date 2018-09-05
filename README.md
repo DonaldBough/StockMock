@@ -1,2 +1,3 @@
-# StockMock407
-StockMock is a fun and simple stock trading tutorial website.
+![alt text](https://i.imgur.com/TwZetoe.png)
+
+# A fun and risk-free way of learning your way around the stock market

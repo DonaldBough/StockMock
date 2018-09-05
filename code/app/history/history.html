@@ -1,0 +1,48 @@
+<div class="container">
+	<div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">History
+            </h1>
+        </div>
+
+</div>
+	<div class="row">
+		<div class="col col-lg-8">
+		</div>
+		<div class="col col-lg-6">
+			<div class="btn-group float-right" role="group" data-toggle="buttons">
+				<label name="all" ng-click="filter('')" class="btn btn-default active">
+					<input type="radio" checked>All
+				</label>
+				<label name="trading" ng-click="filter('Market')" class="btn btn-default">
+					<input type="radio">Trading
+				</label>
+				<label name="dividends" ng-click="filter('Dividend')" class="btn btn-default">
+					<input type="radio">Dividends
+				</label>
+				<label name="transfers" ng-click="filter('Bank')" class="btn btn-default">
+					<input type="radio">Transfers
+				</label>
+			</div>
+		</div>
+	</div>
+		<br />
+
+		<ul class="list-group">
+			<li ng-repeat="transaction in transactions | filter : buttons" class="list-group-item">
+				<div class="row responsive">
+					<div class="col col-lg-6">
+						<h4 name="transtype">{{transaction.type}}</h4>
+						<h7>{{transaction.date | date : "medium"}}</h7>
+					</div>
+					<div class="col col-lg-4">
+						<h4 ng-show="transaction.shares">{{transaction.shares}} shares</h4>
+					</div>
+					<div class="col col-lg-2">
+						<h3>{{transaction.amount | currency}}</h3>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>

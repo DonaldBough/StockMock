@@ -1,0 +1,29 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">StockMock
+                <small name="greeting">Hello {{loggedInUser}}!</small>
+            </h1>
+        </div>
+		
+		<div class="col-lg-12">
+			<h3 ng-show="currentBalance || gotCompanyResponse" class="text-center">Your Balance: {{currentBalance | currency}}</h3>
+			<ul class="list-group">
+			<li ng-show="companies" class="list-group-item"><h4>Companies Whose Shares You Own</h4></li>
+			<li ng-show="noCompanies" class="list-group-item text-center"><h4>You don't own any shares. Search a company to get started.</h4></li>
+			<li ng-show="noCompanies" class="list-group-item text-center"><img src="/app/StockMockLogoFull.png" class="img-responsive"></li>
+			<li ng-repeat="(key, value) in companies" class="list-group-item">
+				<div class="row responsive">
+					<div class="col col-lg-6">
+						<h4><a href="" ng-click="viewComp(key)">{{key}}</a></h4>
+						<h7>{{value}} Shares</h7>
+					</div>
+				</div>
+			</li>
+		</ul>
+		</div>
+		
+	</div>
+</div>
