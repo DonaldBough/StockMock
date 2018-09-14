@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+          News
+        </h1>
+    </div>
+  </div>
+  <!-- Filters -->
+  <div class="row">
+    <div class="col col-lg-6">
+      <h2 style="color: grey;"> Filter your news </h3>
+      <div style="float: left; padding-right: 20px;">
+        <input type="text" class="form-control" placeholder="News Source">
+      </div>
+      <div style="float: left; padding-right: 20px;">
+        <input type="text" class="form-control" placeholder="Company">
+      </div>
+      <div style="float: left; padding-right: 20px; padding-top: 5px;">
+        <label class="radio-inline"><input type="radio" name="optradio" checked>English</label>
+        <label class="radio-inline"><input type="radio" name="optradio">Spanish</label>
+        <label class="radio-inline"><input type="radio" name="optradio">French</label>
+      </div>
+      <button type="button" class="btn btn-primary">Refresh</button>
+
+
+    </div>
+  </div>
+  <br />
+  <!-- List -->
+  <ul class="list-group">
+    <li ng-repeat="article in articles" class="list-group-item">
+      <div class="row responsive">
+        <p style="float:right; padding-right: 2em"> {{article.publishedAt}}</p>
+        <div class="col col-lg-3" style="float:left;">
+          <img src={{article.urlToImage}} height="100px" width="200">
+        </div>
+        <div class="col col-lg-7" style="float:left;">
+          <h4><a href={{article.url}} target="_blank">{{article.title}}</a></h4>
+          <h7>Source: {{article.source.name}}</h7>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

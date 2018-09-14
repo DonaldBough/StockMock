@@ -14,7 +14,7 @@ angular.module('myApp.history', ['ngRoute', 'ngCookies'])
 	if (!$rootScope.loggedIn) {
 		window.location.href = '#!/login';
 	}
-	
+	z
 	$scope.$on('$routeChangeSuccess', function(next, current) {
 		if(window.location.href.includes("history")) {
 			firebaseGetTransactions(function(message, transactions) {
