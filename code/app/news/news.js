@@ -26,20 +26,9 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
       window.location.href = '#!/login';
     }
   }
-  
-  function saveArticlesInScope(scope, articles) {
-    if (articles != null) {
-      $timeout(function() {
-        scope.articles = articles;
-        console.log(scope.articles);
-      }, 0);
-    }
-  }
 
   var getNewsArticles = function(callback) {
-    var apiUrl = 'https://newsapi.org/v2/top-headlines?' +
-                'sources=financial-times,crypto-coins-news&' +
-                'apiKey=3ef315de0c774040af13a65cdc9c7524';
+    var apiUrl = getApiUrl();
     $http({
       method: 'GET',
       url: apiUrl
@@ -49,12 +38,26 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
     });
   }
 
+  function getApiUrl() {
+    debugger;
+    var apiString = 'https://newsapi.org/v2/top-headlines?';
+
+    if ($scope.language != null && $scope.language != 'en') {
+      apiString += 'country=' + $scope.language + '&';
+      apiString += 'category=business&'
+      return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
+    }
+    if ($scope.newsSource != null) {
+      apiString += 'sources=' + $scope.newsSource + '&';
+      return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
+    }
+    apiString += 'sources=financial-times,crypto-coins-news&';
+    return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
+  }
+
   function getCleanArticles(articles) {
     articles.forEach(function(article) {
       article.publishedAt = article.publishedAt.replace('T', '  ').replace('Z', '');
-      if (!imageExists(article.urlToImage)) {
-        article.urlToImage = '../android-chrome-512x512.png'
-      }
       if (article.title.length > 70) {
         article.title = article.title.substring(0, 67) + " ...";
       }
@@ -62,11 +65,23 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
     return articles;
   }
 
-  function imageExists(image_url){
-    var http = new XMLHttpRequest();
-    http.open('HEAD', image_url, false);
-    http.send();
-    return http.status != 404;
+  function saveArticlesInScope(scope, articles) {
+    if (articles != null) {
+      $timeout(function() {
+        scope.articles = articles;
+        console.log(scope.articles);
+      }, 0);
+    }
+  }
+
+  $rootScope.displayNewsArticles = function(language, newsSource, company) {
+    debugger;
+    $scope.language = language;
+    $scope.newsSource = newsSource;
+    $scope.company = company;
+    getNewsArticles(function(articles) {
+      saveArticlesInScope($scope, articles);
+    });
   }
 
   $rootScope.filter = function(value) {
@@ -97,3 +112,9 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
     $scope.transfer = true;
   }
 });
+
+function imgError(image) {
+    image.onerror = '';
+    image.src = '../android-chrome-512x512.png';
+    return true;
+}
