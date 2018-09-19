@@ -15,4 +15,16 @@ angular.module('myApp.statistics', ['ngRoute', 'ngCookies']) //'ngSanitize'
 		window.location.href = '#!/login';
 	}
 
+//Number of users in StockMock
+var count = 0;
+var query = firebase.database().ref("/user/").orderByKey();
+query.once("value")
+  .then(function(snapshot) {
+    snapshot.forEach(function() {
+    count++
   });
+console.log(count);
+});
+
+
+});
