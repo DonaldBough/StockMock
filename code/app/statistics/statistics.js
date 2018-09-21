@@ -20,18 +20,19 @@ var totalUniqueComp = 0;
 var map = new Map();
 //Number of users in StockMock
 
-var query = firebase.database().ref("/user/").orderByKey();
+/*var query = firebase.database().ref("/user/").orderByKey();
 query.once("value")
   .then(function(snapshot) {
     snapshot.forEach(function() {
     totalUsers++;
   });
 });
-
+*/
 //Fetch number of shares purchased for each company on StockMock
 var query = firebase.database().ref("user");
 query.once("value").then(function(snapshot) {
     snapshot.forEach(function(user) {
+      totalUsers++;
       var userObj = user.val();
       if(userObj["stocks"] !== undefined) {
         var stocks = userObj["stocks"];
