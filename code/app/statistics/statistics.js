@@ -14,20 +14,13 @@ angular.module('myApp.statistics', ['ngRoute', 'ngCookies']) //'ngSanitize'
 	if (!$rootScope.loggedIn) {
 		window.location.href = '#!/login';
 	}
-var totalUsers = 0;
-var totalShares = 0;
-var totalUniqueComp = 0;
-var map = new Map();
-//Number of users in StockMock
 
-/*var query = firebase.database().ref("/user/").orderByKey();
-query.once("value")
-  .then(function(snapshot) {
-    snapshot.forEach(function() {
-    totalUsers++;
-  });
-});
-*/
+//Initialize Global Variables
+var totalUsers = 0; //Number of users in StockMock
+var totalShares = 0; //Number of shares traded on StockMock
+var totalUniqueComp = 0; //Number of unique companies traded in StockMock
+var map = new Map();
+
 //Fetch number of shares purchased for each company on StockMock
 var query = firebase.database().ref("user");
 query.once("value").then(function(snapshot) {
@@ -60,6 +53,4 @@ for (let [key, value] of mapSort) {     // Print sorted data
  console.log("Shares traded on StockMock", totalShares);
  console.log("Unique Companies on StockMock", totalUniqueComp);
 })
-
-
 });
