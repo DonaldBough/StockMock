@@ -20,7 +20,7 @@ var totalUsers = 0; //Number of users in StockMock
 var totalShares = 0; //Number of shares traded on StockMock
 var totalUniqueComp = 0; //Number of unique companies traded in StockMock
 var map = new Map();
-
+var userNumber;
 //Fetch number of shares purchased for each company on StockMock
 var query = firebase.database().ref("user");
 query.once("value").then(function(snapshot) {
@@ -49,11 +49,15 @@ totalUniqueComp = map.size; // Unique companies on StockMock = number of compani
 //Sort map in descending order based on values
 const mapSort = new Map([...map.entries()].sort((a, b) => b[1] - a[1]));
 
+let mapped = {};
 for (let [key, value] of mapSort) {     // Print sorted data
-     console.log(key + ' ' + value);
- }
- console.log("Users on StockMock", totalUsers);
- console.log("Shares traded on StockMock", totalShares);
- console.log("Unique Companies on StockMock", totalUniqueComp);
+     mapped[key] = value;
+}
+$scope.mapSort = mapped;
+$scope.itemsToArray = Array.from(mapSort.entries());
+console.log(mapSort);
+ document.getElementById('users').innerHTML = totalUsers;
+ document.getElementById('shares').innerHTML = totalShares;
+ document.getElementById('companies').innerHTML = totalUniqueComp;
 })
 });
