@@ -23,19 +23,38 @@ var map = new Map();
   query.once("value").then(function(snapshot) {
       snapshot.forEach(function(user) {
         if(user.val().email !== undefined && user.val().balance !== undefined){
+          var uid = String(user.key);
           var username = String(user.val().email);
           var portfolioValue = parseFloat(user.val().balance);
-          if(!map.has(username))
-            map.set(username, portfolioValue);
+          if(!map.has(uid))
+            map.set(uid, [username,portfolioValue]);
         }
       })
   }).then(() => {
+    //Sorting the map
+    const mapSort = new Map([...map.entries()].sort((a, b) => b[1][1] - a[1][1]));
+   /*
+    Initial way of doing it
+    var firebaseMap = new Map();
+    for (let [key, value] of mapSort) {     // Print leaderboard data
+       console.log(key + ' ' + value[0]+' '+value[1]);
+       firebaseMap.set(key,value[0]);
+    }
+    */
+    var topTen = Array.from(mapSort.entries()).slice(0,10).map((element) => ([element[0],element[1][0]]));
 
-   const mapSort = new Map([...map.entries()].sort((a, b) => b[1] - a[1]));
+    firebase.database().ref("leaderboard").set(strMapToObj(topTen));
+    //firebase.database().ref("leaderboard").set(strMapToObj(firebaseMap));
+    console.log("Leaderboard PUSHED TO Firebase");
+ })
 
-   for (let [key, value] of mapSort) {     // Print leaderboard data
-       console.log(key + ' ' + value);
+   function strMapToObj(strMap) {
+       let obj = Object.create(null);
+       for (let [k,v] of strMap) {
+           // We don’t escape the key '__proto__'
+           // which can cause problems on older engines
+           obj[k] = v;
+       }
+       return obj;
    }
-  })
-
   });
