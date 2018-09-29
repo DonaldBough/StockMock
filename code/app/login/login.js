@@ -107,7 +107,7 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies'])
 	$scope.signup = function() {
 		//console.log($scope.username + " " + $scope.password);
 
-		if($scope.create_username == null || $scope.create_password == null || $scope.validate == null) {
+		if($scope.create_username == null || $scope.create_password == null || $scope.validate == null || $scope.create_realusername == null) {
 			$rootScope.error("Looks like you didn't fill all the required fields. Please enter an email and password and try again.");
 			return;
 		}
@@ -127,6 +127,10 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies'])
 			$rootScope.error("Please enter a username that is between 3 and 254 characters.");
 			return;
 		}
+		else if ($scope.create_realusername.length < 3 || $scope.create_realusername.length > 254) {
+			$rootScope.error("Please enter a username that is between 3 and 254 characters.");
+			return;
+		}
 		else if ($scope.create_password.length > 30 || $scope.create_password.length < 8) {
 			$rootScope.error("Please enter a password that is between 8 and 30 characters.");
 			return;
@@ -136,12 +140,15 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies'])
 			return;
 		}
 		else {
-			createFirebaseUser($scope.create_username, $scope.create_password, function(response) {
+			createFirebaseUser( $scope.create_realusername, $scope.create_username, $scope.create_password, function(response) {
 				if (response.includes("email-already-in-use")) {
 					$rootScope.error("Hey! That user already exists.");
 				}
 				else if (response.includes("invalid-email")) {
 					$rootScope.error("Looks like you didn't enter a valid email. Please enter an email as your username.");
+				}
+				else if (response.includes("username already in use")) {
+					$rootScope.error("Hey! That username already exists please choose a different username");
 				}
 				else if (response.includes("User Created and Logged In.")) {
 					sendNewUserEmail(firebase.auth().currentUser, function(success, errorMessage) {
@@ -201,30 +208,51 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies'])
 	}
 
 	 var flag = true;
-	 var createFirebaseUser = function(email, password, callback) {
-			firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-				// Handle Errors here.
-			  var errorCode = error.code;
-			  var errorMessage = error.message;
-
-			  console.log(errorCode + '\n' + errorMessage);
-			  callback(errorCode + ' ' + errorMessage);
-			});
-
-			firebase.auth().onAuthStateChanged(function(user) {
-			  if (user && flag) {
-				var id = user.uid;
-				// var newUserData =
-				firebaseWriteToPath('user/' + id, {
-				  email: user.email,
-				  uid: id
-				});
-				  callback("User Created and Logged In.");
-				  flag = false;
-			  }
-			});
-
-  }
+	 var createFirebaseUser = function(username, email, password, callback) {
+			var map = [];
+			var x = false;
+			var q = firebase.database().ref("user");
+			q.once("value")
+			.then(function(snapshot) {
+				snapshot.forEach(function(user) {
+					var userObj = user.val();
+					map.push(userObj.username);
+				}
+			)}).then(()=> {
+			if(map.includes(username)) {
+				console.log("1");
+				callback("username already in use");
+				console.log("username already in use");
+				return;
+			}
+			else {
+					console.log("2");
+					firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+						// Handle Errors here.
+						var errorCode = error.code;
+						var errorMessage = error.message;
+		
+						console.log(errorCode + '\n' + errorMessage);
+						callback(errorCode + ' ' + errorMessage);
+					});
+					firebase.auth().onAuthStateChanged(function(user) {
+						if (user && flag) {
+						var id = user.uid;
+						firebase.database().ref('user/' + id).set({
+							email: user.email,
+							uid: id,
+							username : username
+						});
+							callback("User Created and Logged In.");
+							flag = false;
+						}
+					});
+			}
+		});
+		
+		
+	}
+		
   //$scope.funcName(123, 456)
   var firebaseLogin = function(email, password, callback) {
 			firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
