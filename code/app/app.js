@@ -12,6 +12,7 @@ var app = angular.module('myApp', [
   'myApp.settings',
   'myApp.login',
   'myApp.change-password',
+  'myApp.myprofile',
   'myApp.viewSearch'
 ]);
 

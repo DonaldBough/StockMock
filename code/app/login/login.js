@@ -235,13 +235,15 @@ angular.module('myApp.login', ['ngRoute', 'ngCookies'])
 						console.log(errorCode + '\n' + errorMessage);
 						callback(errorCode + ' ' + errorMessage);
 					});
+					var d = new Date();
 					firebase.auth().onAuthStateChanged(function(user) {
 						if (user && flag) {
 						var id = user.uid;
 						firebase.database().ref('user/' + id).set({
 							email: user.email,
 							uid: id,
-							username : username
+							username : username,
+							aboutme: "Hey, I joined StockMock on " + d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear()
 						});
 							callback("User Created and Logged In.");
 							flag = false;
