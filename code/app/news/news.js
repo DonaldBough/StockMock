@@ -39,7 +39,6 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
   }
 
   function getApiUrl() {
-    debugger;
     var apiString = 'https://newsapi.org/v2/top-headlines?';
 
     if ($scope.language != null && $scope.language != 'en') {
@@ -49,6 +48,10 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
     }
     if ($scope.newsSource != null) {
       apiString += 'sources=' + $scope.newsSource + '&';
+      return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
+    }
+    if ($scope.company != null) {
+      apiString += 'q=' + $scope.company + '&';
       return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
     }
     apiString += 'sources=financial-times,crypto-coins-news&';
@@ -69,13 +72,11 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
     if (articles != null) {
       $timeout(function() {
         scope.articles = articles;
-        console.log(scope.articles);
       }, 0);
     }
   }
 
   $rootScope.displayNewsArticles = function(language, newsSource, company) {
-    debugger;
     $scope.language = language;
     $scope.newsSource = newsSource;
     $scope.company = company;
