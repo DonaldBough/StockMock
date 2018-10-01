@@ -215,6 +215,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 				}
 				else {
 					$('#buyModal').modal('hide');
+          $rootScope.compName = $rootScope.compName.toUpperCase();
 					$rootScope.error("Nice find! You successfully bought "+n+" shares of "+$rootScope.compName+".");
 					
 					response = (response - (n*$scope.currentPrice)).toFixed(2);

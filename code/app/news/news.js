@@ -39,7 +39,6 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
   }
 
   function getApiUrl() {
-    debugger;
     var apiString = 'https://newsapi.org/v2/top-headlines?';
 
     if ($scope.language != null && $scope.language != 'en') {
@@ -69,13 +68,11 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
     if (articles != null) {
       $timeout(function() {
         scope.articles = articles;
-        console.log(scope.articles);
       }, 0);
     }
   }
 
   $rootScope.displayNewsArticles = function(language, newsSource, company) {
-    debugger;
     $scope.language = language;
     $scope.newsSource = newsSource;
     $scope.company = company;
