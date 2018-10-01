@@ -1,2 +1,2 @@
 start "" http://localhost:8000
-python -m SimpleHTTPServer
+py -m http.server
