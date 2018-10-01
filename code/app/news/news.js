@@ -50,6 +50,10 @@ angular.module('myApp.news', ['ngRoute', 'ngCookies'])
       apiString += 'sources=' + $scope.newsSource + '&';
       return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
     }
+    if ($scope.company != null) {
+      apiString += 'q=' + $scope.company + '&';
+      return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
+    }
     apiString += 'sources=financial-times,crypto-coins-news&';
     return apiString += 'apiKey=3ef315de0c774040af13a65cdc9c7524';
   }
