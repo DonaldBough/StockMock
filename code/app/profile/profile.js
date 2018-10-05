@@ -43,7 +43,8 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
                         $interval.cancel();
                     }, 500);
                     var totalInvested = fetchStockValues(companies);
-                    console.log(totalInvested);
+
+                    $scope.invested = totalInvested;
                     updateUserInvestment(totalInvested);
                 });
             });
@@ -154,7 +155,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
             }
             const price = await (getStockPrice(stockData) * companies[key]).toFixed(2);
             array[key] = price;
-            console.log(price);
+            console.log(array);
         });
         console.log(array);
         return 0;
