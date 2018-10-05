@@ -42,9 +42,8 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
                         if (companies == null) $scope.noCompanies = true;
                         $interval.cancel();
                     }, 500);
-                    var totalInvested = fetchStockValues(companies);
-
-                    updateUserInvestment(totalInvested);
+                    var totalInvested = fetchStockValues(companies, balance);
+                    if (totalInvested !== 0) updateUserInvestment(totalInvested);
                 });
             });
         }
@@ -142,13 +141,16 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
         }
     }
 
-    var fetchStockValues = function(companies) {
-        let array = [];
-        //iterator(array, companies, Object.keys(companies).length);
 
+// mine
+    var fetchStockValues = async function(companies, balance) {
+        let array = [];
+        //Object.keys(companies).forEach(function(key) {array[key] = 0});
+        iterator(array, companies, balance, Object.keys(companies).length);
+        return 0;
     }
 
-    var iterator =function(array, companies, length) {
+    var iterator = async function(array, companies, balance,length) {
         var promise1 = new Promise(function(resolve) {
             setTimeout(function() {
                 Object.keys(companies).forEach(async function(key) {
@@ -156,39 +158,30 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
                    if (Object.keys(stockData)[1] == undefined)
                         return;
                    let price = await (getStockPrice(stockData, array[key]) * companies[key]).toFixed(2);
-                   array[key] = price;
-                   console.log(array);
-                   console.log(array.length == length);
-                   //resolve(array);
+                   array.push(parseFloat(price));
+                   if (array.length == length)
+                    resolve(array);
                });
            }, 500);
 
        }).then((array) => {
-           //console.log(array);
-           if (array.length == length) {
-               var totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + parseFloat(array[keys]);},0);
-               console.log(totalInvested);
-           }
-           $scope.invested = parseFloat(totalInvested).toFixed(2);
+           console.log(array);
+           var totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + parseFloat(array[keys]);},0);
+           console.log("Total Invested:" + totalInvested);
+           //return totalInvested;
+           //$scope.invested = parseFloat(totalInvested).toFixed(2);
+           //$scope.totalInvest = (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2);
+           console.log("Total:" + (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2));
         });
     }
 
     var getStockAPI = async function(key) {
         const apiKey1 = 'IJ5198MHHWRYRP9Y';
         const apiKey2 = 'H3RM4TRVAXEE1MRR';
-        const apiKey3 = 'XVO22C0XJ5EH7F21';
-        const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey1;
+        const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey2;
         const stockRes = await fetch(apiUrl);
         const stockData = await stockRes.json();
-        if (Object.keys(stockData)[1] == undefined) {
-            const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey2;
-            const stockRe = await fetch(apiUrl);
-            const stockDat = await stockRe.json();
-            return stockDat;
-        }
-
-
-     return stockData;
+        return stockData; //else return stockData;
     }
 
     var getStockPrice = function(stockData) {
@@ -202,15 +195,3 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
     }
 
 });
-/*
-
-let stockData = await getStockAPI(key);
-let price = 0;
-if (Object.keys(stockData)[1] == undefined) {
-    return;
-} else {
-    price = await (getStockPrice(stockData, array[key]) * companies[key]).toFixed(2);
-}
-array[key] = price;
-console.log(array);
-*/
