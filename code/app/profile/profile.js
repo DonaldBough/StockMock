@@ -42,8 +42,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
                         if (companies == null) $scope.noCompanies = true;
                         $interval.cancel();
                     }, 500);
-                    var totalInvested = fetchStockValues(companies, balance);
-                    if (totalInvested !== 0) updateUserInvestment(totalInvested);
+                    fetchStockValues(companies, balance);
                 });
             });
         }
@@ -172,6 +171,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
            //$scope.invested = parseFloat(totalInvested).toFixed(2);
            //$scope.totalInvest = (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2);
            console.log("Total:" + (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2));
+           updateUserInvestment(totalInvested);
         });
     }
 
