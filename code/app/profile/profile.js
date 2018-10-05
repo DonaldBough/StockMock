@@ -44,7 +44,6 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
                     }, 500);
                     var totalInvested = fetchStockValues(companies);
 
-                    $scope.invested = totalInvested;
                     updateUserInvestment(totalInvested);
                 });
             });
@@ -143,31 +142,75 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
         }
     }
 
-    var fetchStockValues = function (companies) {
-        var array = [];
-        Object.keys(companies).forEach(async (key) => {
-            const alphaVantageAPIKey = 'IJ5198MHHWRYRP9Y';
-            const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + alphaVantageAPIKey;
-            const stockRes = await fetch(apiUrl);
-            const stockData = await stockRes.json();
-            if (Object.keys(stockData)[1] == undefined) {
-                return;
-            }
-            const price = await (getStockPrice(stockData) * companies[key]).toFixed(2);
-            array[key] = price;
-            console.log(array);
-        });
-        console.log(array);
-        return 0;
+    var fetchStockValues = function(companies) {
+        let array = [];
+        //iterator(array, companies, Object.keys(companies).length);
+
     }
 
-    var getStockPrice = (stockData) => {
+    var iterator =function(array, companies, length) {
+        var promise1 = new Promise(function(resolve) {
+            setTimeout(function() {
+                Object.keys(companies).forEach(async function(key) {
+                   let stockData = await getStockAPI(key);
+                   if (Object.keys(stockData)[1] == undefined)
+                        return;
+                   let price = await (getStockPrice(stockData, array[key]) * companies[key]).toFixed(2);
+                   array[key] = price;
+                   console.log(array);
+                   console.log(array.length == length);
+                   //resolve(array);
+               });
+           }, 500);
+
+       }).then((array) => {
+           //console.log(array);
+           if (array.length == length) {
+               var totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + parseFloat(array[keys]);},0);
+               console.log(totalInvested);
+           }
+           $scope.invested = parseFloat(totalInvested).toFixed(2);
+        });
+    }
+
+    var getStockAPI = async function(key) {
+        const apiKey1 = 'IJ5198MHHWRYRP9Y';
+        const apiKey2 = 'H3RM4TRVAXEE1MRR';
+        const apiKey3 = 'XVO22C0XJ5EH7F21';
+        const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey1;
+        const stockRes = await fetch(apiUrl);
+        const stockData = await stockRes.json();
+        if (Object.keys(stockData)[1] == undefined) {
+            const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey2;
+            const stockRe = await fetch(apiUrl);
+            const stockDat = await stockRe.json();
+            return stockDat;
+        }
+
+
+     return stockData;
+    }
+
+    var getStockPrice = function(stockData) {
         const stockDates = stockData[Object.keys(stockData)[1]];
         const priceArr = stockDates[Object.keys(stockDates)[Object.keys(stockDates).length - 1]];
         const p = JSON.stringify(priceArr);
         const l = p.indexOf("open") + 7;
         const r = p.indexOf(",") - 1;
         return parseFloat(p.substring(l, r)).toFixed(2);
+
     }
 
 });
+/*
+
+let stockData = await getStockAPI(key);
+let price = 0;
+if (Object.keys(stockData)[1] == undefined) {
+    return;
+} else {
+    price = await (getStockPrice(stockData, array[key]) * companies[key]).toFixed(2);
+}
+array[key] = price;
+console.log(array);
+*/
