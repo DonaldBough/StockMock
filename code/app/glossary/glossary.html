@@ -1,33 +1,57 @@
+<style>
+    #menuBar{
+        margin: auto;
+        text-align: center;
+        position: fixed;
+        left: 0em;
+        top: 10em;
+        width: 2em;
+    }
+</style>
+
+<html>
 <div class="container">
-
     <div class="row">
-
         <div class="col-lg-12">
-            <h1 class="page-header">Glossary
-            </h1>
-        </div>
+            <h1 class="page-header">Glossary</h1>
 
+        </div>
+        <div id="menuBar" class="col-lg-12">
+            <a onClick="document.getElementById('a').scrollIntoView({block: 'center'});">a</a>
+            <a onClick="document.getElementById('b').scrollIntoView({block: 'center'});">b</a>
+            <a onClick="document.getElementById('c').scrollIntoView({block: 'center'});">c</a>
+            <a onClick="document.getElementById('d').scrollIntoView({block: 'center'});">d</a>
+            <a onClick="document.getElementById('e').scrollIntoView({block: 'center'});">e</a>
+            <a onClick="document.getElementById('f').scrollIntoView({block: 'center'});">f</a>
+            <a onClick="document.getElementById('g').scrollIntoView({block: 'center'});">g</a>
+            <a onClick="document.getElementById('h').scrollIntoView({block: 'center'});">h</a>
+            <a onClick="document.getElementById('i').scrollIntoView({block: 'center'});">i</a>
+            <a onClick="document.getElementById('l').scrollIntoView({block: 'center'});">l</a>
+            <a onClick="document.getElementById('p').scrollIntoView({block: 'center'});">p</a>
+            <a onClick="document.getElementById('r').scrollIntoView({block: 'center'});">r</a>
+            <a onClick="document.getElementById('s').scrollIntoView({block: 'center'});">s</a>
+            <a onClick="document.getElementById('t').scrollIntoView({block: 'center'});">t</a>
+            <a onClick="document.getElementById('v').scrollIntoView({block: 'center'});">v</a>
+            <a onClick="document.getElementById('w').scrollIntoView({block: 'center'});">w</a>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row" ng-repeat="section in FAQs" >
+                <div class="list-group" ng-repeat="questions in section.questions">
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">{{section.header}}</div>
+                        <div class="panel-body" id="{{keys(questions)}}">
+                            <a id="{{keys(questions)}}"></a>
+                            <p>{{elements(questions)}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class = "row">
-<div class="col-lg-12">
-<div class="row" ng-repeat="section in FAQs"  id="{{camelCase(section.header)}}">
-<div class="list-group" ng-repeat="question in section.questions">
-<!-- <h4 class="list-group-item-heading">List group item heading</h4>
-    <p class="list-group-item-text">...</p> -->
-    <div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading">{{section.header}}</div>
-  <div class="panel-body">
-    <p>{{question.a}}</p>
-  </div>
-    <!--
-  <dl>
-    <dt>{{camelCase(section.header)}}</dt>
-    <dd>{{question.a}}</dd>
-  </dl> -->
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+
+</html>
