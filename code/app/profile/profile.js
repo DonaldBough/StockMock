@@ -39,11 +39,12 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
                 fetchUserStocks(function(companies) {
                     $timeout(function() {
                         $scope.companies = companies;
-                        fetchStockValues(companies);
                         if (companies == null) $scope.noCompanies = true;
                         $interval.cancel();
                     }, 500);
-
+                    var totalInvested = fetchStockValues(companies);
+                    console.log(totalInvested);
+                    updateUserInvestment(totalInvested);
                 });
             });
         }
@@ -68,13 +69,21 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
         });
     }
 
-    var updateUserBalance = function(value, callback) {
+    var updateUserBalance = function(value) {
         var user = firebase.auth().currentUser;
 
         if (user != null) {
             firebaseWriteToPath("/user/" + user.uid + "/balance", value);
             callback("User balance was succesfully updated");
         } else callback("It seems that you are not logged in");
+    }
+
+    var updateUserInvestment = function(value, callback) {
+        var user = firebase.auth().currentUser;
+
+        if (user != null) {
+            firebaseWriteToPath("/user/" + user.uid + "/invested", value + "");
+        } else return;
     }
 
     var getUserBalance = function(callback) {
@@ -133,7 +142,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
         }
     }
 
-    var fetchStockValues = async function (companies) {
+    var fetchStockValues = function (companies) {
         var array = [];
         Object.keys(companies).forEach(async (key) => {
             const alphaVantageAPIKey = 'IJ5198MHHWRYRP9Y';
@@ -148,6 +157,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
             console.log(price);
         });
         console.log(array);
+        return 0;
     }
 
     var getStockPrice = (stockData) => {
