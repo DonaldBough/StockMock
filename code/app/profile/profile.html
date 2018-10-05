@@ -10,7 +10,8 @@
 
 		<div class="col-lg-12">
 			<h3 ng-show="currentBalance || gotCompanyResponse" class="text-center">Buying Power: {{currentBalance | currency}}</h3>
-			<h3 ng-show="invested || gotCompanyResponse" class="text-center ng-show">Total Invested: {{invested | currency}}</h3>
+			<!--<h3 ng-show="invested || gotCompanyResponse" class="text-center ng-show">Total Invested: {{invested | currency}}</h3>
+			<h2 ng-show="totalInvest || gotCompanyResponse" class="text-center ng-show">Total: {{totalInvest | currency}}</h2>-->
 			<ul class="list-group">
 			<li ng-show="companies" class="list-group-item"><h4>Companies Whose Shares You Own</h4></li>
 			<li ng-show="noCompanies" class="list-group-item text-center"><h4>You don't own any shares. Search a company to get started.</h4></li>
