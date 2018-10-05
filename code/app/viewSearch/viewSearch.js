@@ -48,7 +48,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 						$rootScope.notfound = true;
 						$rootScope.data = data;
 						$rootScope.searchInProgress = false;
-						
+
 						window.onload = $rootScope.error('Uh oh... it looks like \"'+$rootScope.companyName+'\" does not exist.');
 
 						$rootScope.companyName = '';
@@ -190,7 +190,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		var obj = $rootScope.data;
 
 		var n = $scope.numberOfShares;
-		
+
 //		Removed for user convenience
 //		var time = (new Date()).getUTCHours()-4;
 //		if (time < 4 || time >= 20) {
@@ -216,7 +216,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 				else {
 					$('#buyModal').modal('hide');
 					$rootScope.error("Nice find! You successfully bought "+n+" shares of "+$rootScope.compName+".");
-					
+
 					response = (response - (n*$scope.currentPrice)).toFixed(2);
 					updateUserBalance(response, function(message) {});
 					updateUserStocks($rootScope.compName,n,function(message) {});
@@ -271,11 +271,11 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		}
 		$scope.numberOfShares = '';
 	}
-	
+
 	$rootScope.close = function() {
 		$scope.numberOfShares = '';
 	}
-	
+
 	var firebaseWriteToPath = function(path, data) {
 
     firebase.database().ref(path).set(data);
