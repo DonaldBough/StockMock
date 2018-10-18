@@ -43,6 +43,25 @@ var map = new Map();
     */
     var topTen = Array.from(mapSort.entries()).slice(0,10).map((element) => ([element[0],element[1][0]]));
 
+    let mapTable = "";
+    let mapped = {};
+    var lol = 0;
+        for (let [key, value] of mapSort) {
+          lol++;
+          // Print sorted data
+          mapped[value[0]] = value[1];
+          mapTable += `
+          <tr>
+              <td>${lol}</td>
+              <td>${value[0]}</td>
+              <td colspan="2">${value[1]}</td>
+          </tr>`;
+          if (lol == 10) {
+            break;
+          }
+        }
+
+     document.getElementById("leaderboardRankings").innerHTML = mapTable;
     firebase.database().ref("leaderboard").set(strMapToObj(topTen));
     //firebase.database().ref("leaderboard").set(strMapToObj(firebaseMap));
     console.log("Leaderboard PUSHED TO Firebase");
