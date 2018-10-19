@@ -14,7 +14,9 @@ var app = angular.module('myApp', [
   'myApp.change-password',
   'myApp.myprofile',
   'myApp.viewSearch',
-  'myApp.news'
+  'myApp.news',
+  'myApp.viewSearch',
+  'myApp.leaderboard'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
