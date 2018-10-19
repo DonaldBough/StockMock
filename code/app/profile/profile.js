@@ -9,13 +9,23 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
   });
 }])
 
-.controller('ProfileCtrl', function($scope, $rootScope, $cookieStore, $timeout, $interval) {
+.controller('ProfileCtrl', function($scope, $rootScope, $cookieStore, $timeout, $interval, $routeParams) {
 	$rootScope.loggedIn = $cookieStore.get('loggedIn');
 	$rootScope.loggedInUser = $cookieStore.get('loggedInUser');
 	if (!$rootScope.loggedIn) {
 		window.location.href = '#!/login';
 	}
-	
+  if ($routeParams != null && $routeParams.id != null) {
+    $rootScope.whosBalance = "Their balance";
+    $rootScope.youOrThey = "They";
+    $rootScope.whoHasNoCompanies = "They do not currently own any shares."
+  }
+  else {
+    $rootScope.whosBalance = "Your balance";
+    $rootScope.youOrThey = "You";
+    $rootScope.whoHasNoCompanies = "You don't own any shares. Search a company to get started."
+  }
+
 	$scope.search = function() {
 		if($rootScope.companyName == undefined ||
 		  $rootScope.companyName == '') {
@@ -37,27 +47,19 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
 	
 	$scope.count = 0;
 	var getBalance = function() {
-//		console.log($cookieStore.get('currentBalance'));
-//		if ($cookieStore.get('currentBalance') != null) {
-//			$interval.cancel(promise);
-//			$rootScope.currentBalance = $cookieStore.get('currentBalance');
-//			$cookieStore.remove('currentBalance');
-//		}
-//		else {
-			if ($scope.count == 1) {
-				getUserBalance(function(balance) {
-					$scope.currentBalance = balance;
-					fetchUserStocks(function(companies) {
-						$timeout(function() {
-							$scope.companies = companies;
-							if (companies == null) $scope.noCompanies = true;
-							$interval.cancel();
-						}, 500);
-					});
-				});
-			}
-			$scope.count = $scope.count + 1;
-//		}
+  	if ($scope.count == 1) {
+  		getUserBalance(function(balance) {
+  			$scope.currentBalance = balance;
+  			fetchUserStocks(function(companies) {
+  				$timeout(function() {
+  					$scope.companies = companies;
+  					if (companies == null) $scope.noCompanies = true;
+  					$interval.cancel();
+  				}, 500);
+  			});
+  		});
+  	}
+  	$scope.count = $scope.count + 1;
 	}
 	
 	$scope.$on('$routeChangeSuccess', function(next, current) {
@@ -67,90 +69,78 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
 	});
 	
 	var firebaseWriteToPath = function(path, data) {
-
     firebase.database().ref(path).set(data);
-
   }
 
   var firebaseReadFromPath = function(path, callback) {
-    var userId = firebase.auth().currentUser.uid;
     firebase.database().ref(path).once('value').then(function(snapshot) {
-      // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-      // ...
       var val = snapshot.val();
 
       callback(val);
-
-
     });
-    //callback(-1);
-  }
-
-  var updateUserBalance = function(value, callback) {
-    var user = firebase.auth().currentUser;
-
-    if (user != null) {
-      firebaseWriteToPath("/user/" + user.uid + "/balance", value);
-      callback("User balance was succesfully updated");
-    }
-    else callback("It seems that you are not logged in");
   }
 
   var getUserBalance = function(callback) {
-    var user = firebase.auth().currentUser;
-    if (user != null) {
-      firebaseReadFromPath("/user/" + user.uid + "/balance", function(data) {
-        callback((data == -1) ? 0: data);
-      });
-    } else {
-      callback(0, "It seems that you are not logged in");
-    }
+    var userId;
+
+    if ($routeParams != null && $routeParams.id != null)
+      userId = $routeParams.id;
+    else if (firebase.auth().currentUser != null)
+      userId = firebase.auth().currentUser.uid
+    else
+      callback(0, "It seems that you are not logged in"); 
+    firebaseReadFromPath("/user/" + userId + "/balance", function(data) {
+      callback((data == -1) ? 0: data);
+    });
   }
 
   var updateUserStocks = function(stock, buy, callback) {
-    var user = firebase.auth().currentUser;
-    if (user != null) {
-      var path = "/user/" + user.uid + "/stocks";
-      firebaseReadFromPath(path, function(stocks) {
-        if (buy >= 0) {
-		  if (stocks == null) {
-			  var stockArr = [];
-			  stocks = stockArr;
-		  }
-          stocks[stock] = (stocks[stock] == null) ? buy: stocks[stock] + buy;
+    var userId;
 
-        } else {
-          if (stocks[stock] == null) {
-            callback("you do not own any of these stocks");
-            return;
-          }
-		  if (stocks[stock] + buy == 0) {
-			  stocks[stock] = null;
-		  }
-		  else {
-			  stocks[stock] = stocks[stock] + buy;
-		  }
+    if ($routeParams != null && $routeParams.id != null)
+      userId = $routeParams.id;
+    else if (firebase.auth().currentUser != null)
+      userId = firebase.auth().currentUser.uid
+    else
+      callback();
+    var path = "/user/" + userId + "/stocks";
+    firebaseReadFromPath(path, function(stocks) {
+      if (buy >= 0) {
+  		  if (stocks == null) {
+  			  var stockArr = [];
+  			  stocks = stockArr;
+  		  }
+        stocks[stock] = (stocks[stock] == null) ? buy: stocks[stock] + buy;
+      }
+      else {
+        if (stocks[stock] == null) {
+          callback("you do not own any of these stocks");
+          return;
         }
-
-        firebaseWriteToPath(path, stocks);
-		callback("Success");
-
-      });
-
-    }
+  		  if (stocks[stock] + buy == 0) {
+  			  stocks[stock] = null;
+  		  }
+  		  else {
+  			  stocks[stock] = stocks[stock] + buy;
+  		  }
+      }
+      firebaseWriteToPath(path, stocks);
+	    callback("Success");
+    });
   }
 
   var fetchUserStocks = function(callback) {
-    var user = firebase.auth().currentUser;
-    if (user != null) {
-      var path = "/user/" + user.uid + "/stocks";
-      firebaseReadFromPath(path, function(stocks) {
-        // let arr = stocks.split(",");
-        callback(stocks);
-      });
-    } else {
-      callback(null, 0);
-    }
-  }
+    var userId;
 
+    if ($routeParams != null && $routeParams.id != null)
+      userId = $routeParams.id;
+    else if (firebase.auth().currentUser != null)
+      userId = firebase.auth().currentUser.uid
+    else
+      callback(null, 0);
+    var path = "/user/" + userId + "/stocks";
+    firebaseReadFromPath(path, function(stocks) {
+      callback(stocks);
+    });
+  }
 });

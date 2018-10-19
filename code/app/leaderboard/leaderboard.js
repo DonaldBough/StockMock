@@ -15,9 +15,8 @@ angular.module('myApp.leaderboard', ['ngRoute', 'ngCookies']) //'ngSanitize'
 		window.location.href = '#!/login';
 	}
 
-//Initialize Global Variables
-var map = new Map();
-
+  //Initialize Global Variables
+  var map = new Map();
   //Fetch number of shares purchased for each company on StockMock
   var query = firebase.database().ref("user");
   query.once("value").then(function(snapshot) {
@@ -33,19 +32,11 @@ var map = new Map();
   }).then(() => {
     //Sorting the map
     const mapSort = new Map([...map.entries()].sort((a, b) => b[1][1] - a[1][1]));
-   /*
-    Initial way of doing it
-    var firebaseMap = new Map();
-    for (let [key, value] of mapSort) {     // Print leaderboard data
-       console.log(key + ' ' + value[0]+' '+value[1]);
-       firebaseMap.set(key,value[0]);
-    }
-    */
     var topTen = Array.from(mapSort.entries()).slice(0,10).map((element) => ([element[0],element[1][0]]));
-
     let mapTable = "";
     let mapped = {};
     var lol = 0;
+
         for (let [key, value] of mapSort) {
           lol++;
           // Print sorted data
@@ -53,7 +44,11 @@ var map = new Map();
           mapTable += `
           <tr>
               <td>${lol}</td>
-              <td>${value[0]}</td>
+              <td>
+                <a href="#!/profile?id=${key}">
+                  ${value[0]}
+                </a>
+              </td>
               <td colspan="2">${value[1]}</td>
           </tr>`;
           if (lol == 10) {
@@ -63,17 +58,16 @@ var map = new Map();
 
      document.getElementById("leaderboardRankings").innerHTML = mapTable;
     firebase.database().ref("leaderboard").set(strMapToObj(topTen));
-    //firebase.database().ref("leaderboard").set(strMapToObj(firebaseMap));
     console.log("Leaderboard PUSHED TO Firebase");
- })
+  })
 
-   function strMapToObj(strMap) {
-       let obj = Object.create(null);
-       for (let [k,v] of strMap) {
-           // We don’t escape the key '__proto__'
-           // which can cause problems on older engines
-           obj[k] = v;
-       }
-       return obj;
-   }
-  });
+ function strMapToObj(strMap) {
+   let obj = Object.create(null);
+   for (let [k,v] of strMap) {
+       // We don’t escape the key '__proto__'
+       // which can cause problems on older engines
+       obj[k] = v;
+    }
+    return obj;
+  }
+});
