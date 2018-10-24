@@ -16,7 +16,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		window.location.href = '#!/login';
 	}
 	$rootScope.compName = $rootScope.companyName;
-
+  $rootScope.bot(["APPL"], ["MSFT"]);
 	$rootScope.search = function() {
 		if($rootScope.companyName == undefined ||
 		  $rootScope.companyName == '') {

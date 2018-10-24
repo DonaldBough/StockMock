@@ -19,6 +19,20 @@ var app = angular.module('myApp', [
   'myApp.leaderboard'
 ]);
 
+function makeTable(leaderboardSuggestions, stockSuggestions) {
+    var table = document.getElementById('t01');
+    for (var i = 0; i < leaderboardSuggestions.length; i++) {
+        var row = document.createElement('tr');
+            var leaderboardCell = document.createElement('td');
+            leaderboardCell.textContent = leaderboardSuggestions[i];
+            row.appendChild(leaderboardCell);
+            var stockCell = document.createElement('td');
+            stockCell.textContent = stockSuggestions[i];
+            row.appendChild(stockCell);
+        table.appendChild(row);
+    }
+    // return table;
+}
 app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
@@ -26,10 +40,27 @@ app.config(['$locationProvider', '$routeProvider', function($locationProvider, $
 }]);
 
 app.run(function($rootScope, $timeout) {
-    $rootScope.error = function(errorMessage) {
-            $rootScope.errorMessage = errorMessage;
-			$timeout(function() {
-				$('#errorModal').modal('show');
-			});
-        };
-  })
+  $rootScope.error = function(errorMessage) {
+    console.log("IM Here");
+    $rootScope.errorMessage = errorMessage;
+    $timeout(function() {
+      $('#errorModal').modal('show');
+    });
+  };
+
+  $rootScope.bot = function(leaderboardSuggestions, stockSuggestions) {
+    console.log("IM Here2");
+    // $rootScope.errorMessage = errorMessage;
+
+    var table = makeTable(leaderboardSuggestions, stockSuggestions);
+    // parentTable.appendChild(table);
+    // $timeout(function() {
+      $('#botModal').modal('show');
+    // });
+  };
+
+
+
+
+
+})
