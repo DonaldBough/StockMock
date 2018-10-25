@@ -3,12 +3,35 @@
 
 var leaderboardStocks = [];
 
-
 function getLeaderboardStocks() {
-  var stocks = []
-  let userStocks = fetchUserStocks();
+  var stocks = [];
+  var user = firebase.auth().currentUser;
+  var count = 0;
+  let leaders = firebaseReadFromPath("leaderboard", function(leaders) {
+      for (let leader in leaders) {
+        console.log(leader);
+        if (leader != user) {
+        fetchUserStocks(function(leaderStocks) {
+            if (leaderStocks != null) {
+            stocks += leaderStocks;
+            // console.log("printing stocks in here ");
+            // console.log(stocks);
+            count += 1;
+            if (Object.keys(leaders).length == count) {
+              fetchUserStocks(function(userStocks) {
+                generateLeaderBoardSuggestions(userStocks, leaderboardStocks);
+              });
+            }
+          }
+        },leader);
+      }
+    }
+      console.log("printing stocks");
+      console.log(stocks);
+  });
+}
 
-
+function generateLeaderBoardSuggestions(userStocks, leaderboardStocks) {
 
 }
 
@@ -30,6 +53,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 	}
 	$rootScope.compName = $rootScope.companyName;
   // $rootScope.bot(["APPL"], ["MSFT"]);
+  getLeaderboardStocks();
 	$rootScope.search = function() {
 		if($rootScope.companyName == undefined ||
 		  $rootScope.companyName == '') {
@@ -311,28 +335,6 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		$scope.numberOfShares = '';
 	}
 
-
-
-	var firebaseWriteToPath = function(path, data) {
-
-    firebase.database().ref(path).set(data);
-
-  }
-
-  var firebaseReadFromPath = function(path, callback) {
-    var userId = firebase.auth().currentUser.uid;
-    firebase.database().ref(path).once('value').then(function(snapshot) {
-      // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-      // ...
-      var val = snapshot.val();
-
-      callback(val);
-
-
-    });
-    //callback(-1);
-  }
-
   var updateUserBalance = function(value, callback) {
     var user = firebase.auth().currentUser;
 
@@ -387,22 +389,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
     }
   }
 
-  var fetchUserStocks = function(callback, currentUser = null) {
-    var user = currentUser;
-    if (user == null) {
-      user = firebase.auth().currentUser
-    }
-    if (user != null) {
-      var path = "/user/" + user.uid + "/stocks";
-      firebaseReadFromPath(path, function(stocks) {
-        // let arr = stocks.split(",");
-        console.log(stocks);
-        callback(stocks);
-      });
-    } else {
-      callback(null, 0);
-    }
-  }
+
 
   var getDate = function() {
     var today = new Date();
@@ -476,3 +463,40 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
 
 });
+
+
+function firebaseWriteToPath(path, data) {
+
+  firebase.database().ref(path).set(data);
+
+}
+
+function firebaseReadFromPath(path, callback) {
+  // var userId = firebase.auth().currentUser.uid;
+  firebase.database().ref(path).once('value').then(function(snapshot) {
+    // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+    // ...
+    var val = snapshot.val();
+
+    callback(val);
+
+
+  });
+  //callback(-1);
+}
+
+function fetchUserStocks(callback, currentUser = null) {
+  var userPath = currentUser;
+  if (userPath == null) {
+    userPath = firebase.auth().currentUser.uid;
+  }
+  if (userPath != null) {
+    var path = "/user/" + userPath + "/stocks";
+    firebaseReadFromPath(path, function(stocks) {
+      // let arr = stocks.split(",");
+      callback(stocks);
+    });
+  } else {
+    callback(null, 0);
+  }
+}
