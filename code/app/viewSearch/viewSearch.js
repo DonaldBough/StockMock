@@ -89,7 +89,20 @@ function isLeaderBoardUser(callback) {
 }
 
 function updateStockRelations(boughtStock, stocksOwnedByUser) {
-
+  for (let stock in stocksOwnedByUser) {
+    if (boughtStock != stock) {
+      firebaseReadFromPath("stockRelations/" + stock, function(relatedStocks) {
+        let set = new Set(relatedStocks);
+          if (!set.has(boughtStock)) {
+            set.add(boughtStock);
+          }
+          let array = [];
+          set.forEach(v => array.push(v));
+          // TODO: may need to write a dictionary so may need to change this
+          firebaseWriteToPath("stockRelations/" + stock, array);
+      })
+    }
+  }
 }
 
 
