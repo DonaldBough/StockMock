@@ -1,5 +1,18 @@
 'use strict';
 
+
+var leaderboardStocks = [];
+
+
+function getLeaderboardStocks() {
+  var stocks = []
+  let userStocks = fetchUserStocks();
+
+
+
+}
+
+
 angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -260,6 +273,12 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		else {
 			fetchUserStocks(function(response) {
 				var resp = response[$rootScope.compName];
+        console.log("from alpha " + $rootScope.compName);
+        if (resp == null) {
+          $rootScope.compName = $rootScope.compName.toUpperCase();
+          console.log("from alpha " + $rootScope.compName);
+          resp = response[$rootScope.compName];
+        }
 				if (resp == null) {
 					$('#sellModal').modal('hide');
 					$rootScope.error("Looks like you do not own any shares of this company.");
@@ -368,12 +387,16 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
     }
   }
 
-  var fetchUserStocks = function(callback) {
-    var user = firebase.auth().currentUser;
+  var fetchUserStocks = function(callback, currentUser = null) {
+    var user = currentUser;
+    if (user == null) {
+      user = firebase.auth().currentUser
+    }
     if (user != null) {
       var path = "/user/" + user.uid + "/stocks";
       firebaseReadFromPath(path, function(stocks) {
         // let arr = stocks.split(",");
+        console.log(stocks);
         callback(stocks);
       });
     } else {
