@@ -10,16 +10,17 @@ function getLeaderboardStocks() {
   let leaders = firebaseReadFromPath("leaderboard", function(leaders) {
       for (let leader in leaders) {
         console.log(leader);
+        count += 1;
         if (leader != user) {
         fetchUserStocks(function(leaderStocks) {
             if (leaderStocks != null) {
             stocks += leaderStocks;
             // console.log("printing stocks in here ");
             // console.log(stocks);
-            count += 1;
+            console.log(Object.keys(leaders).length, count );
             if (Object.keys(leaders).length == count) {
               fetchUserStocks(function(userStocks) {
-                generateLeaderBoardSuggestions(userStocks, leaderboardStocks);
+                generateLeaderBoardSuggestions(Object.keys(userStocks), leaderboardStocks);
               });
             }
           }
@@ -31,7 +32,21 @@ function getLeaderboardStocks() {
   });
 }
 
-function generateLeaderBoardSuggestions(userStocks, leaderboardStocks) {
+function generateLeaderBoardSuggestions(userStocks, leaderBoardStocks, callback) {
+  let userSet = new Set(userStocks);
+  let leaderboardSet = new Set(leaderBoardStocks);
+  let stocks = [];
+  console.log("new stocks count ", leaderboardSet);
+
+  for (let stock in leaderboardSet) {
+    if (!userSet.has(stock) && !userSet.has(stock.toUpperCase())) {
+        stocks.push(stock);
+    }
+    // callback(stocks);
+    leaderboardStocks = stocks;
+    console.log("stocks post leaderboard update" + leaderboardStocks);
+  }
+
 
 }
 
@@ -273,7 +288,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
   $rootScope.beginBuy = function() {
     console.log("made it");
-    $rootScope.bot(["123"], ["123"]);
+    $rootScope.bot(leaderboardStocks, ["123"]);
     $('#buyModal').modal('show');
     // document.getElementById("#buyModal").showModal();
   }
