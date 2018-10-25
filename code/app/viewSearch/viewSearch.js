@@ -2,6 +2,7 @@
 
 
 var leaderboardStocks = [];
+var stockSuggestions = [];
 
 function getLeaderboardStocks() {
   var stocks = [];
@@ -46,10 +47,38 @@ function generateLeaderBoardSuggestions(userStocks, leaderBoardStocks, callback)
     leaderboardStocks = stocks;
     console.log("stocks post leaderboard update" + leaderboardStocks);
   }
-
-
 }
 
+function getLeaders(callback) {
+  firebaseReadFromPath("leaderboard", function(leaders) {callback(Object.keys(leaders));});
+}
+
+
+function getStockRelations(callback) {
+  firebaseReadFromPath("stockRelations", function(relations) {callback(relations)});
+}
+
+
+function getStockSuggestions() {
+  let user = firebase.auth().currentUser;
+  var suggestions = new Set();
+  if (user != null) {
+    fetchUserStocks(function(stocksDict){
+      let userStocks = Object.keys(stocksDict);
+        getStockRelations(function(relations) {
+            for (let stock in userStocks) {
+              if (relations[stock] != null) {
+                suggestions.add(relations[stock]);
+              }
+            }
+            var array = [];
+            suggestions.forEach(v => array.push(v));
+            // callback(array);
+            stockSuggestions = array;
+        });
+    });
+  }
+}
 
 angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
@@ -69,6 +98,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 	$rootScope.compName = $rootScope.companyName;
   // $rootScope.bot(["APPL"], ["MSFT"]);
   getLeaderboardStocks();
+  getStockSuggestions();
 	$rootScope.search = function() {
 		if($rootScope.companyName == undefined ||
 		  $rootScope.companyName == '') {
@@ -288,7 +318,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
   $rootScope.beginBuy = function() {
     console.log("made it");
-    $rootScope.bot(leaderboardStocks, ["123"]);
+    $rootScope.bot(leaderboardStocks, stockSuggestions);
     $('#buyModal').modal('show');
     // document.getElementById("#buyModal").showModal();
   }
