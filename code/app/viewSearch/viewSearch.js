@@ -80,6 +80,30 @@ function getStockSuggestions() {
   }
 }
 
+function isLeaderBoardUser(callback) {
+  let user = firebase.auth().currentUser;
+  getLeaders(function(leaders) {
+    let leadersSet = new Set(leaders);
+    callback(leadersSet.has(user.uid));
+  });
+}
+
+function updateStockRelations(boughtStock, stocksOwnedByUser) {
+
+}
+
+
+function updateStockSuggestionForStock(boughtStock) {
+  let user = firebase.auth().currentUser;
+  isLeaderBoardUser(function(isLeader) {
+    if (isLeader) {
+      fetchUserStocks(function(stocksDict) {
+        updateStockRelations(boughtStock, Object.keys(stocksDict));
+      });
+    }
+  });
+}
+
 angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
 .config(['$routeProvider', function($routeProvider) {
