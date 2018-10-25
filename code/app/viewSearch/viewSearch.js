@@ -16,7 +16,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		window.location.href = '#!/login';
 	}
 	$rootScope.compName = $rootScope.companyName;
-  $rootScope.bot(["APPL"], ["MSFT"]);
+  // $rootScope.bot(["APPL"], ["MSFT"]);
 	$rootScope.search = function() {
 		if($rootScope.companyName == undefined ||
 		  $rootScope.companyName == '') {
@@ -198,6 +198,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 //			$rootScope.error("You can't buy shares when the market is closed! The stock market is only open from 4am to 8pm Eastern Standard Time.");
 //		}
 
+
 		if (n == undefined || !Number.isInteger(n)) {
 			$('#buyModal').modal('hide');
 			$rootScope.error("Hi! Please enter an integer.");
@@ -231,6 +232,20 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 		}
 		$scope.numberOfShares = '';
 	}
+
+
+  $rootScope.beginBuy = function() {
+    console.log("made it");
+    $rootScope.bot(["123"], ["123"]);
+    $('#buyModal').modal('show');
+    // document.getElementById("#buyModal").showModal();
+  }
+
+  $rootScope.showBuy = function() {
+    console.log("made it");
+    $('#botModal').modal('hide');
+    $('#buyModal').modal('show');
+  }
 
 	$rootScope.sellShares = function() {
 		var n = $scope.numberOfShares;
@@ -276,6 +291,8 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 	$rootScope.close = function() {
 		$scope.numberOfShares = '';
 	}
+
+
 
 	var firebaseWriteToPath = function(path, data) {
 

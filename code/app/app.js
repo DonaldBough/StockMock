@@ -33,6 +33,7 @@ function makeTable(leaderboardSuggestions, stockSuggestions) {
     }
     // return table;
 }
+
 app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('!');
 
@@ -52,10 +53,17 @@ app.run(function($rootScope, $timeout) {
     console.log("IM Here2");
     // $rootScope.errorMessage = errorMessage;
 
+    // let leaderBoardStocks = getLeaderboardStocks();
+
+
     var table = makeTable(leaderboardSuggestions, stockSuggestions);
     // parentTable.appendChild(table);
     // $timeout(function() {
       $('#botModal').modal('show');
+
+
+
+
     // });
   };
 
