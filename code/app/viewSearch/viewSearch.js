@@ -47,8 +47,8 @@ function getTrendingStocks() {
       trendingStocks.splice(0, 11);
     }
     // updateing trending stocks suggetions
-
     trendingStockSuggestions = trendingStocks.map(stock => stock.name);
+    console.log(trendingStockSuggestions);
 
   });
 
@@ -426,6 +426,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
             $('#buyModal').modal('hide');
             updateStockPopularityCount($rootScope.compName.toUpperCase());
             $rootScope.compName = $rootScope.compName.toUpperCase();
+            updateStockSuggestionForStock($rootScope.compName);
             $rootScope.error("Nice find! You successfully bought "+n+" shares of "+$rootScope.compName+".");
 
             response = (response - (n*$scope.currentPrice)).toFixed(2);
