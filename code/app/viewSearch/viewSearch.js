@@ -177,20 +177,42 @@ function isLeaderBoardUser(callback) {
 }
 
 function updateStockRelations(boughtStock, stocksOwnedByUser) {
-  for (let stock in stocksOwnedByUser) {
-    if (boughtStock != stock) {
-      firebaseReadFromPath("stockRelations/" + stock, function(relatedStocks) {
-        let set = new Set(relatedStocks);
-        if (!set.has(boughtStock)) {
-          set.add(boughtStock);
-        }
-        let array = [];
-        set.forEach(v => array.push(v));
-        // TODO: may need to write a dictionary so may need to change this
-        firebaseWriteToPath("stockRelations/" + stock, array);
-      })
+  // for (let stock in stocksOwnedByUser) {
+  // if (boughtStock != stock) {
+  firebaseReadFromPath("stockRelations", function(relations) {
+    if (relations == null) {
+      relations = [];
     }
-  }
+
+    var relatedStocks = relations[boughtStock];
+
+    if (relatedStocks == null) {
+      relatedStocks = [];
+    }
+
+    for (var  i = 0; i < stocksOwnedByUser.length; i++) {
+      var stock = stocksOwnedByUser[i];
+      if (stock != boughtStock && !relatedStocks.includes(stock)) {
+        relatedStocks.push(stock);
+        var relatedStocksRelations = relations[stock];
+        if (relatedStocksRelations == null) {
+          relatedStocksRelations = [];
+        }
+        if (!relatedStocksRelations.includes(boughtStock)) {
+          relatedStocksRelations.push(boughtStock);
+        }
+        relations[stock] = relatedStocksRelations;
+      }
+    }
+    relations[boughtStock] = relatedStocks;
+
+
+
+    // TODO: may need to write a dictionary so may need to change this
+    firebaseWriteToPath("stockRelations", relations);
+  });
+  // }
+  // }
 }
 
 
@@ -199,6 +221,8 @@ function updateStockSuggestionForStock(boughtStock) {
   isLeaderBoardUser(function(isLeader) {
     if (isLeader) {
       fetchUserStocks(function(stocksDict) {
+        console.log("Updating suggestinos");
+        console.log(boughtStock, stocksDict, Object.keys(stocksDict));
         updateStockRelations(boughtStock, Object.keys(stocksDict));
       });
     }
