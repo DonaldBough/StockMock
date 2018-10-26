@@ -5,7 +5,7 @@ var leaderboardStocks = [];
 var stockSuggestions = [];
 
 function getLeaderboardStocks() {
-  var stocks = [];
+  var stocks = new Array();
   var user = firebase.auth().currentUser;
   var count = 0;
   let leaders = firebaseReadFromPath("leaderboard", function(leaders) {
@@ -15,13 +15,14 @@ function getLeaderboardStocks() {
         if (leader != user) {
         fetchUserStocks(function(leaderStocks) {
             if (leaderStocks != null) {
-            stocks += leaderStocks;
-            // console.log("printing stocks in here ");
-            // console.log(stocks);
+            var leaderStocksKeys = Object.keys(leaderStocks);
+            leaderStocksKeys.forEach(v => stocks.push(v));
+            console.log("printing stocks in here ");
+            console.log(stocks);
             console.log(Object.keys(leaders).length, count );
             if (Object.keys(leaders).length == count) {
               fetchUserStocks(function(userStocks) {
-                generateLeaderBoardSuggestions(Object.keys(userStocks), leaderboardStocks);
+                generateLeaderBoardSuggestions(Object.keys(userStocks), stocks);
               });
             }
           }
@@ -33,20 +34,24 @@ function getLeaderboardStocks() {
   });
 }
 
-function generateLeaderBoardSuggestions(userStocks, leaderBoardStocks, callback) {
+function generateLeaderBoardSuggestions(userStocks, leadersStocks, callback) {
   let userSet = new Set(userStocks);
-  let leaderboardSet = new Set(leaderBoardStocks);
+  let leaderboardSet = new Set(leadersStocks);
   let stocks = [];
   console.log("new stocks count ", leaderboardSet);
 
-  for (let stock in leaderboardSet) {
+  leadersStocks = [...leaderboardSet];
+  let len = leadersStocks.length;
+  for (var i = 0; i < len; i++) {
+    let stock = leadersStocks[i];
     if (!userSet.has(stock) && !userSet.has(stock.toUpperCase())) {
         stocks.push(stock);
     }
+  }
     // callback(stocks);
     leaderboardStocks = stocks;
     console.log("stocks post leaderboard update" + leaderboardStocks);
-  }
+
 }
 
 function getLeaders(callback) {
@@ -64,8 +69,9 @@ function getStockSuggestions() {
   var suggestions = new Set();
   if (user != null) {
     fetchUserStocks(function(stocksDict){
-      let userStocks = Object.keys(stocksDict);
+      let userStocks = Array(Object.keys(stocksDict));
         getStockRelations(function(relations) {
+
             for (let stock in userStocks) {
               if (relations[stock] != null) {
                 suggestions.add(relations[stock]);
