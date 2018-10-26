@@ -154,15 +154,22 @@ function getStockSuggestions() {
       let userStocks = Array(Object.keys(stocksDict));
       getStockRelations(function(relations) {
 
-        for (let stock in userStocks) {
-          if (relations[stock] != null) {
-            suggestions.add(relations[stock]);
+
+        for (var i = 0; i < userStocks.length; i++) {
+          let stock = userStocks[i];
+          let suggestionsFromRelations = relations[stock];
+          if (suggestionsFromRelations != null) {
+            for (var j = 0; j < suggestionsFromRelations.length; j++) {
+              let suggestedStock = suggestionsFromRelations[j];
+              if (!userStocks.include(suggestedStock)) {
+                suggestions.add(suggestedStock);
+              }
+            }
           }
         }
-        var array = [];
-        suggestions.forEach(v => array.push(v));
+
         // callback(array);
-        stockSuggestions = array;
+        stockSuggestions = [...suggestions];
       });
     });
   }
