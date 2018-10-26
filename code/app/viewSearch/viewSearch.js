@@ -2,7 +2,60 @@
 
 
 var leaderboardStocks = [];
+var trendingStockSuggestions = [];
 var stockSuggestions = [];
+
+// creating trending stock Object
+
+function TrendingStock(name, count) {
+  var object = {
+    name: name,
+    count: count
+}
+  return object
+}
+
+
+// TrendingStock.prototype.stockName = "test";
+// TrendingStock.prototype.count = 0;
+
+
+function getTrendingStocks() {
+  // var stocks = new Array();
+  var user = firebase.auth().currentUser;
+  // var count = 0;
+
+  firebaseReadFromPath("trendingStocks", function(trendingStocksDict) {
+    var trendingStocks = [];
+    if (trendingStocksDict != null) {
+      // getting trending stocks
+    for (const [trendingStock, value] of Object.entries(trendingStocksDict)) {
+        let name = String(trendingStock);
+        let count = Number(value);
+        console.log("priting name and count odf treaning stock ", name , count, trendingStock);
+        var temp = TrendingStock(name, count);
+        trendingStocks.push(temp);
+    }
+  }
+    // getting top 10 trending stocks
+
+    trendingStocks = trendingStocks.sort(function(a, b) {
+                return a.count > b.count;
+      });
+
+      if (trendingStocks.length > 10) {
+        trendingStocks.splice(0, 11);
+      }
+      // updateing trending stocks suggetions
+
+    trendingStockSuggestions = trendingStocks.map(stock => stock.name);
+
+  });
+
+}
+
+
+
 
 function getLeaderboardStocks() {
   var stocks = new Array();
@@ -141,6 +194,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 	$rootScope.compName = $rootScope.companyName;
   // $rootScope.bot(["APPL"], ["MSFT"]);
   getLeaderboardStocks();
+  getTrendingStocks();
   getStockSuggestions();
 	$rootScope.search = function() {
 		if($rootScope.companyName == undefined ||
@@ -361,7 +415,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
   $rootScope.beginBuy = function() {
     console.log("made it");
-    $rootScope.bot(leaderboardStocks, stockSuggestions);
+    $rootScope.bot(trendingStockSuggestions, stockSuggestions);
     $('#buyModal').modal('show');
     // document.getElementById("#buyModal").showModal();
   }
