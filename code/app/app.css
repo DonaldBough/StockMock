@@ -208,9 +208,7 @@ table#t01, th, td {
 th, td {
     padding: 15px;
 }
-table tr td:empty {
-    width: 50px;
-}
+
 td {
   width: 50%;
   padding: 10px 0;

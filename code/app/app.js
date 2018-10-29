@@ -21,6 +21,12 @@ var app = angular.module('myApp', [
 
 function makeTable(leaderboardSuggestions, stockSuggestions) {
     var table = document.getElementById('t01');
+    var tableRows = table.getElementsByTagName('tr');
+    var rowCount = tableRows.length;
+
+    for (var x=rowCount-1; x>0; x--) {
+        table.removeChild(tableRows[x]);
+      }
     for (var i = 0; i < leaderboardSuggestions.length; i++) {
         var row = document.createElement('tr');
             var leaderboardCell = document.createElement('td');
