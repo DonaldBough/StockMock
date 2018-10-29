@@ -20,19 +20,22 @@ var app = angular.module('myApp', [
 ]);
 
 function makeTable(leaderboardSuggestions, stockSuggestions) {
-    var table = document.getElementById('t01');
-    var tableRows = table.getElementsByTagName('tr');
+    var table = document.getElementById('botTable');
+    var tableRows = table.getElementsByTagName('tr')
     var rowCount = tableRows.length;
 
     for (var x=rowCount-1; x>0; x--) {
         table.removeChild(tableRows[x]);
-      }
+    }
     for (var i = 0; i < leaderboardSuggestions.length; i++) {
-        var row = document.createElement('tr');
+        var row = document.createElement('tr')
+        row.classList.add("botRow");
             var leaderboardCell = document.createElement('td');
+            leaderboardCell.classList.add("botRow");
             leaderboardCell.textContent = leaderboardSuggestions[i];
             row.appendChild(leaderboardCell);
             var stockCell = document.createElement('td');
+            stockCell.classList.add("botCell");
             stockCell.textContent = stockSuggestions[i];
             row.appendChild(stockCell);
         table.appendChild(row);
