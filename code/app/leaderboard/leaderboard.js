@@ -21,10 +21,11 @@ angular.module('myApp.leaderboard', ['ngRoute', 'ngCookies']) //'ngSanitize'
   var query = firebase.database().ref("user");
   query.once("value").then(function(snapshot) {
       snapshot.forEach(function(user) {
-        if(user.val().email !== undefined && user.val().balance !== undefined){
+        if(user.val().username !== undefined && user.val().balance !== undefined){
           var uid = String(user.key);
-          var username = String(user.val().email);
-          var portfolioValue = parseFloat(user.val().balance);
+          var username = String(user.val().username);
+          var invested = parseFloat((user.val().invested !== undefined)?user.val().invested:0);
+          var portfolioValue = parseFloat(parseFloat(user.val().balance) + invested).toFixed(2);
           if(!map.has(uid))
             map.set(uid, [username,portfolioValue]);
         }

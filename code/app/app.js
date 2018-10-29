@@ -9,6 +9,7 @@ var app = angular.module('myApp', [
   'myApp.history',
   'myApp.tutorial',
   'myApp.banking',
+  'myApp.statistics',
   'myApp.settings',
   'myApp.login',
   'myApp.change-password',
