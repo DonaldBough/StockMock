@@ -151,7 +151,9 @@ function getStockSuggestions() {
   var suggestions = new Set();
   if (user != null) {
     fetchUserStocks(function(stocksDict){
-      let userStocks = Array(Object.keys(stocksDict));
+      var userStocks = $.map(stocksDict, function(v, i){
+        return i;
+    });
       getStockRelations(function(relations) {
 
 
@@ -161,7 +163,7 @@ function getStockSuggestions() {
           if (suggestionsFromRelations != null) {
             for (var j = 0; j < suggestionsFromRelations.length; j++) {
               let suggestedStock = suggestionsFromRelations[j];
-              if (!userStocks.include(suggestedStock)) {
+              if (userStocks.indexOf(suggestedStock) == -1) {
                 suggestions.add(suggestedStock);
               }
             }
@@ -248,14 +250,11 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
 .controller('ViewSearchCtrl', function($scope, $http, $interval, $rootScope, $cookieStore) {
   $rootScope.loggedIn = $cookieStore.get('loggedIn');
-  if (!$rootScope.loggedIn) {
-    window.location.href = '#!/login';
-  }
-  $rootScope.compName = $rootScope.companyName;
+	if (!$rootScope.loggedIn) {
+		window.location.href = '#!/login';
+	}
+	$rootScope.compName = $rootScope.companyName;
   // $rootScope.bot(["APPL"], ["MSFT"]);
-  getLeaderboardStocks();
-  getTrendingStocks();
-  getStockSuggestions();
   $rootScope.search = function() {
     if($rootScope.companyName == undefined ||
       $rootScope.companyName == '') {
@@ -317,7 +316,9 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
             $scope.currentBalance = response;
             $scope.$apply();
           });
-
+          getLeaderboardStocks();
+          getTrendingStocks();
+          getStockSuggestions();
           dateArr = dateArr.reverse();
           priceArr = priceArr.reverse();
           var ctx = document.getElementById("companyChart");
@@ -456,8 +457,8 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
           else {
             $('#buyModal').modal('hide');
             updateStockPopularityCount($rootScope.compName.toUpperCase());
-            $rootScope.compName = $rootScope.compName.toUpperCase();
-            updateStockSuggestionForStock($rootScope.compName);
+            $rootScope.compName = $rootScope.compName;
+            updateStockSuggestionForStock($rootScope.compName.toUpperCase());
             $rootScope.error("Nice find! You successfully bought "+n+" shares of "+$rootScope.compName+".");
 
             response = (response - (n*$scope.currentPrice)).toFixed(2);
@@ -477,6 +478,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
     $rootScope.beginBuy = function() {
       console.log("made it");
+
       $rootScope.bot(trendingStockSuggestions, stockSuggestions);
       $('#buyModal').modal('show');
       // document.getElementById("#buyModal").showModal();
