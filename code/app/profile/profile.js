@@ -37,8 +37,31 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
       return;
     }
     else {
-      window.location.href = "#!/viewSearch?"+$rootScope.companyName;
+      redirect();
     }
+  }
+
+  function redirect() {
+    firebase.database().ref("user").once('value').then(function(snapshot) {
+      let users = snapshot.toJSON();
+
+      if (doesUsernameExist(users)) {
+        window.location.href = "#!/myprofile?"+$rootScope.companyName;
+      }
+      else {
+       window.location.href = "#!/viewSearch?"+$rootScope.companyName; 
+      }
+    });
+  }
+
+  function doesUsernameExist(users) {
+    let queriedUsername = $rootScope.companyName;
+
+    for (let user in users) {
+      if (users[user].username == queriedUsername)
+        return true;
+    }
+    return false;
   }
 
   $scope.viewComp = function(key) {
