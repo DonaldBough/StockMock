@@ -40,7 +40,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
       window.location.href = "#!/viewSearch?"+$rootScope.companyName;
     }
   }
-  
+
   $scope.viewComp = function(key) {
     window.location.href = "#!/viewSearch?"+key;
   }
