@@ -7,7 +7,7 @@ exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs: [
 	  'login/login_test.js',
-	  'profile/profile_test.js',
+	  /*'profile/profile_test.js',
 	  'history/history_test.js',
 	  'glossary/glossary_test.js',
 	  'change-password/change-password_test.js',
@@ -15,6 +15,6 @@ exports.config = {
 	  'tutorial/tutorial_test.js',
 	  'history/history_test.js',
 	  'viewSearch/viewSearch_test.js',
-	  'banking/banking_test.js'
+	  'banking/banking_test.js'*/
   ]
 }
