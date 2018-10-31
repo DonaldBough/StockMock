@@ -4,18 +4,18 @@
 	<h1 name="comp_name" ng-show="data" class="text-center">{{compName}}</h1>
 		<ul id="search_view" class="list-group">
 			<li name="shares" ng-show="data" class="text-center">
-				<button name="buy" data-toggle="modal" data-target="#buyModal" class="btn btn-primary">Buy Shares</button>
+				<button name="buy" ng-click="beginBuy()" data-toggle="modal" data-target="#buyModal" class="btn btn-primary">Buy Shares</button>
 				<button name="sell" data-toggle="modal" data-target="#sellModal" class="btn btn-primary">Sell Shares</button>
 				<h4 name="balance" ng-show="currentBalance">Balance: {{currentBalance | currency}}</h4>
 			</li>
 			<li name="current_values" ng-show="data" class="list-group-item disabled" style="text-align: center; font-size: 17px">
 				Current Stock Values
 			</li>
-			
+
 			<li name="enter_query" ng-show="notfound" class="list-group-item disabled" style="text-align: center; font-size: 17px">
 				Please Enter Query in the Search Bar
 			</li>
-			
+
 			<li name="please_wait" ng-hide="data || notfound" class="list-group-item disabled" style="text-align: center; font-size: 17px">
 				Please Wait
 			</li>
@@ -27,7 +27,7 @@
 <div class="container">
   <div class="modal fade" id="buyModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <div class="modal-content">
         <div class="modal-header">
           <button name="buyClose" ng-click="close()" type="button" class="close" data-dismiss="modal">&times;</button>
@@ -42,16 +42,16 @@
           <button name="buySubmit" ng-click="buyShares()" type="button" class="btn btn-default">Submit</button>
         </div>
       </div>
-      
+
     </div>
   </div>
-  
+
 </div>
 
 <div class="container">
   <div class="modal fade" id="sellModal" role="dialog">
     <div class="modal-dialog">
-    
+
       <div class="modal-content">
         <div class="modal-header">
           <button name="sellClose" ng-click="close()" type="button" class="close" data-dismiss="modal">&times;</button>
@@ -66,8 +66,8 @@
           <button name="sellSubmit" ng-click="sellShares()" type="button" class="btn btn-default">Submit</button>
         </div>
       </div>
-      
+
     </div>
   </div>
-  
+
 </div>
