@@ -27,7 +27,9 @@ function makeTable(leaderboardSuggestions, stockSuggestions) {
     for (var x=rowCount-1; x>0; x--) {
         table.removeChild(tableRows[x]);
     }
-    for (var i = 0; i < leaderboardSuggestions.length; i++) {
+
+    var len = Math.max(leaderboardSuggestions.length, stockSuggestions.length);
+    for (var i = 0; i < len; i++) {
         var row = document.createElement('tr')
         row.classList.add("botRow");
             var leaderboardCell = document.createElement('td');

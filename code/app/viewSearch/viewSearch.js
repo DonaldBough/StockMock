@@ -44,7 +44,7 @@ function getTrendingStocks() {
     });
 
     if (trendingStocks.length > 10) {
-      trendingStocks.splice(0, 11);
+      trendingStocks = trendingStocks.slice(0, 10);
     }
     // updateing trending stocks suggetions
     trendingStockSuggestions = trendingStocks.map(stock => stock.name);
@@ -172,6 +172,9 @@ function getStockSuggestions() {
 
         // callback(array);
         stockSuggestions = [...suggestions];
+        if (stockSuggestions.length > 10) {
+          stockSuggestions = trendingStocks.slice(0, 10);
+        }
       });
     });
   }
