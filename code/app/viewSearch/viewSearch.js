@@ -85,6 +85,13 @@ function updateTrendingStocks(boughtStock) {
 
 }
 
+function isTrendingStock(stock) {
+  for (var i = 0; i < trendingStockSuggestions.length; i++) {
+    if (stock == trendingStockSuggestions[i]) {return true;}
+  }
+  return false;
+}
+
 
 function getLeaderboardStocks() {
   var stocks = new Array();
@@ -481,14 +488,16 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
     $rootScope.beginBuy = function() {
       console.log("made it");
-
-      $rootScope.bot(trendingStockSuggestions, stockSuggestions);
-      $('#buyModal').modal('show');
+      if (isTrendingStock($rootScope.compName.toUpperCase())) {
+        $rootScope.bot(trendingStockSuggestions, stockSuggestions);
+        $('#buyModal').modal('show');
+      } 
       // document.getElementById("#buyModal").showModal();
     }
 
+
     $rootScope.showBuy = function() {
-      console.log("made it");
+      // console.log("made it");
       $('#botModal').modal('hide');
       $('#buyModal').modal('show');
     }
