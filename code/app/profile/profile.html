@@ -11,6 +11,7 @@
 
 		<div class="col-lg-12">
 			<h3 ng-show="currentBalance || gotCompanyResponse" class="text-center">{{whosBalance}}: {{currentBalance | currency}}</h3>
+			<h3 ng-show="total" class="text-center">Portfolio Value: {{total | currency}}</h3>
 			<ul class="list-group">
 			<li ng-show="companies" class="list-group-item"><h4>Companies Whose Shares {{youOrThey}} Own</h4></li>
 			<li ng-show="noCompanies" class="list-group-item text-center"><h4>{{whoHasNoCompanies}}</h4></li>
@@ -18,7 +19,7 @@
 			<li ng-repeat="(key, value) in companies" class="list-group-item">
 				<div class="row responsive">
 					<div class="col col-lg-6">
-						<span><h4><a href="" ng-click="viewComp(key)">{{key}}</a></h4><h4>{{value}}</h4></span>
+						<span><h4><a href="" ng-click="viewComp(key)">{{key}}</a></h4><h4>{{value | currency}}</h4></span>
 
 						<h7>{{value}} Shares</h7>
 					</div>

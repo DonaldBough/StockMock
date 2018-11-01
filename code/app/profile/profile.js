@@ -214,10 +214,14 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
          var totalInvested = 0;
           if (array.length >= 1)
             totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + array[keys];},0);
-          else totalInvested = array[0];
+          else totalInvested = parseFloat(array[0]);
           console.log("Total Invested:" + totalInvested);
           console.log("Total:" + (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2));
-          console.log(totalInvested);
+          let total = (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2);
+          $scope.$apply(function () {
+              $scope.total = total;
+          });
+
           updateUserInvestment(parseFloat(totalInvested).toFixed(2));
       });
     }
