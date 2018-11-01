@@ -17,7 +17,8 @@ var app = angular.module('myApp', [
   'myApp.viewSearch',
   'myApp.news',
   'myApp.viewSearch',
-  'myApp.leaderboard'
+  'myApp.leaderboard',
+  'myApp.forum'
 ]);
 
 app.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
