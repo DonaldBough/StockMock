@@ -49,7 +49,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
         window.location.href = "#!/myprofile?"+$rootScope.companyName;
       }
       else {
-       window.location.href = "#!/viewSearch?"+$rootScope.companyName; 
+       window.location.href = "#!/viewSearch?"+$rootScope.companyName;
       }
     });
   }
@@ -67,7 +67,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
   $scope.viewComp = function(key) {
     window.location.href = "#!/viewSearch?"+key;
   }
-  
+
   $scope.count = 0;
   var getBalance = function() {
     if ($scope.count == 1) {
@@ -75,23 +75,24 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
         $scope.currentBalance = balance;
         fetchUserStocks(function(companies) {
           $timeout(function() {
-            $scope.companies = companies;
+            //$scope.companies = companies;
             if (companies == null) $scope.noCompanies = true;
             $interval.cancel();
           }, 500);
             fetchStockValues(companies, balance);
+
         });
       });
     }
     $scope.count = $scope.count + 1;
   }
-  
+
   $scope.$on('$routeChangeSuccess', function(next, current) {
     if(window.location.href.includes("profile")) {
       $interval(getBalance, 1000, 2);
     }
   });
-  
+
   var firebaseWriteToPath = function(path, data) {
     firebase.database().ref(path).set(data);
   }
@@ -106,7 +107,6 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
 
   var updateUserInvestment = function(value, callback) {
     var userId;
-
     if ($routeParams != null && $routeParams.id != null)
       userId = $routeParams.id;
     else if (firebase.auth().currentUser != null)
@@ -124,7 +124,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
     else if (firebase.auth().currentUser != null)
       userId = firebase.auth().currentUser.uid
     else
-      callback(0, "It seems that you are not logged in"); 
+      callback(0, "It seems that you are not logged in");
     firebaseReadFromPath("/user/" + userId + "/balance", function(data) {
       callback((data == -1) ? 0: data);
     });
@@ -165,7 +165,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
     });
   }
 
-  var fetchUserStocks = function(callback) {
+    var fetchUserStocks = function(callback) {
     var userId;
 
     if ($routeParams != null && $routeParams.id != null)
@@ -182,38 +182,48 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
 
     var fetchStockValues = async function(companies, balance) {
       let array = [];
+      let companiesJSON = {};
       if (companies != null)
-        iterator(array, companies, balance, Object.keys(companies).length);
+        await iterator(array, companies, balance, Object.keys(companies).length, companiesJSON);
       return 0;
     }
 
-    var iterator = async function(array, companies, balance,length) {
+    var iterator = async function(array, companies, balance, length, companiesJSON) {
       var promise1 = new Promise(function(resolve) {
-        setTimeout(function() {
+        $timeout(function() {
           Object.keys(companies).forEach(async function(key) {
            let stockData = await getStockAPI(key);
            if (Object.keys(stockData)[1] == undefined)
               return;
            let price = await (getStockPrice(stockData, array[key]) * companies[key]).toFixed(2);
            array.push(parseFloat(price));
+           companiesJSON[key]= parseFloat(price);
            if (array.length == length)
-            resolve(array);
+            resolve(companiesJSON);
          });
        }, 500);
-
-     }).then((array) => {
+     }).then((companiesJSON) => {
+       console.log(companiesJSON);
+         $scope.$apply(function () {
+           Object.keys(companiesJSON).forEach(async function(keys) {
+             let json = JSON.parse(JSON.stringify(companiesJSON[keys]));
+           });
+           $scope.companies = companiesJSON;
+         });
          console.log(array);
-         var totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + parseFloat(array[keys]);},0);
-         console.log("Total Invested:" + totalInvested);
-         console.log("Total:" + (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2));
-         updateUserInvestment(totalInvested);
+         if (array.length > 1)
+          var totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + parseFloat(companiesJSON[keys]);},0);
+          else totalInvested = array[0];
+          console.log("Total Invested:" + totalInvested);
+          console.log("Total:" + (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2));
+          console.log(totalInvested);
+          updateUserInvestment(totalInvested);
       });
     }
-
     var getStockAPI = async function(key) {
       const apiKey1 = 'IJ5198MHHWRYRP9Y';
       const apiKey2 = 'H3RM4TRVAXEE1MRR';
-      const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey2;
+      const apiUrl = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' + key + '&interval=5min&apikey=' + apiKey1;
       const stockRes = await fetch(apiUrl);
       const stockData = await stockRes.json();
       return stockData;
