@@ -31,6 +31,7 @@ function makeTable(leaderboardSuggestions, stockSuggestions) {
     }
 
     var len = Math.max(leaderboardSuggestions.length, stockSuggestions.length);
+    len = Math.min(len, 10)
     for (var i = 0; i < len; i++) {
         var row = document.createElement('tr')
         row.classList.add("botRow");
@@ -63,7 +64,7 @@ app.run(function($rootScope, $timeout) {
   };
 
   $rootScope.bot = function(leaderboardSuggestions, stockSuggestions) {
-    console.log("IM Here2");
+    // console.log("IM Here2");
     // $rootScope.errorMessage = errorMessage;
 
     // let leaderBoardStocks = getLeaderboardStocks();

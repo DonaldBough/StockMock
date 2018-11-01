@@ -47,20 +47,13 @@ function getTrendingStocks() {
     }
     // getting top 10 trending stocks
 
-    // trendingStocks = trendingStocks.sort(function(a, b) {
-    //   return a.count < b.count;
-    // });
-
     trendingStocks = trendingStocks.sort(trendingStocksCompare);
 
-    if (trendingStocks.length > 10) {
-      trendingStocks = trendingStocks.slice(0, 10);
-    }
     // updateing trending stocks suggetions
 
 
     trendingStockSuggestions = trendingStocks.map(stock => stock.name);
-    console.log(trendingStockSuggestions);
+    // console.log(trendingStockSuggestions);
 
   });
 
