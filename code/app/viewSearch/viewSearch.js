@@ -19,6 +19,13 @@ function TrendingStock(name, count) {
 // TrendingStock.prototype.stockName = "test";
 // TrendingStock.prototype.count = 0;
 
+function trendingStocksCompare(a,b) {
+  if (a.count < b.count)
+    return 1;
+  if (a.count > b.count)
+    return -1;
+  return 0;
+}
 
 function getTrendingStocks() {
   // var stocks = new Array();
@@ -29,24 +36,29 @@ function getTrendingStocks() {
     var trendingStocks = [];
     if (trendingStocksDict != null) {
       // getting trending stocks
+
       for (const [trendingStock, value] of Object.entries(trendingStocksDict)) {
         let name = String(trendingStock);
         let count = Number(value);
-        console.log("priting name and count odf treaning stock ", name , count, trendingStock);
+        // console.log("priting name and count odf treaning stock ", name , count, trendingStock);
         var temp = TrendingStock(name, count);
         trendingStocks.push(temp);
       }
     }
     // getting top 10 trending stocks
 
-    trendingStocks = trendingStocks.sort(function(a, b) {
-      return a.count > b.count;
-    });
+    // trendingStocks = trendingStocks.sort(function(a, b) {
+    //   return a.count < b.count;
+    // });
+
+    trendingStocks = trendingStocks.sort(trendingStocksCompare);
 
     if (trendingStocks.length > 10) {
       trendingStocks = trendingStocks.slice(0, 10);
     }
     // updateing trending stocks suggetions
+
+
     trendingStockSuggestions = trendingStocks.map(stock => stock.name);
     console.log(trendingStockSuggestions);
 
@@ -491,7 +503,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
       if (isTrendingStock($rootScope.compName.toUpperCase())) {
         $rootScope.bot(trendingStockSuggestions, stockSuggestions);
         $('#buyModal').modal('show');
-      } 
+      }
       // document.getElementById("#buyModal").showModal();
     }
 
