@@ -211,13 +211,14 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
            $scope.companies = companiesJSON;
          });
          console.log(array);
-         if (array.length > 1)
-          var totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + parseFloat(companiesJSON[keys]);},0);
+         var totalInvested = 0;
+          if (array.length >= 1)
+            totalInvested = Object.keys(array).reduce(function(sum, keys){return sum + array[keys];},0);
           else totalInvested = array[0];
           console.log("Total Invested:" + totalInvested);
           console.log("Total:" + (parseFloat(balance)+parseFloat(totalInvested)).toFixed(2));
           console.log(totalInvested);
-          updateUserInvestment(totalInvested);
+          updateUserInvestment(parseFloat(totalInvested).toFixed(2));
       });
     }
     var getStockAPI = async function(key) {
