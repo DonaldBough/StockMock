@@ -19,6 +19,13 @@ function TrendingStock(name, count) {
 // TrendingStock.prototype.stockName = "test";
 // TrendingStock.prototype.count = 0;
 
+function trendingStocksCompare(a,b) {
+  if (a.count < b.count)
+    return 1;
+  if (a.count > b.count)
+    return -1;
+  return 0;
+}
 
 function getTrendingStocks() {
   // var stocks = new Array();
@@ -29,26 +36,24 @@ function getTrendingStocks() {
     var trendingStocks = [];
     if (trendingStocksDict != null) {
       // getting trending stocks
+
       for (const [trendingStock, value] of Object.entries(trendingStocksDict)) {
         let name = String(trendingStock);
         let count = Number(value);
-        console.log("priting name and count odf treaning stock ", name , count, trendingStock);
+        // console.log("priting name and count odf treaning stock ", name , count, trendingStock);
         var temp = TrendingStock(name, count);
         trendingStocks.push(temp);
       }
     }
     // getting top 10 trending stocks
 
-    trendingStocks = trendingStocks.sort(function(a, b) {
-      return a.count > b.count;
-    });
+    trendingStocks = trendingStocks.sort(trendingStocksCompare);
 
-    if (trendingStocks.length > 10) {
-      trendingStocks = trendingStocks.slice(0, 10);
-    }
     // updateing trending stocks suggetions
+
+
     trendingStockSuggestions = trendingStocks.map(stock => stock.name);
-    console.log(trendingStockSuggestions);
+    // console.log(trendingStockSuggestions);
 
   });
 
@@ -85,6 +90,13 @@ function updateTrendingStocks(boughtStock) {
 
 }
 
+function isTrendingStock(stock) {
+  for (var i = 0; i < trendingStockSuggestions.length; i++) {
+    if (stock == trendingStockSuggestions[i]) {return true;}
+  }
+  return false;
+}
+
 
 function getLeaderboardStocks() {
   var stocks = new Array();
@@ -99,9 +111,9 @@ function getLeaderboardStocks() {
           if (leaderStocks != null) {
             var leaderStocksKeys = Object.keys(leaderStocks);
             leaderStocksKeys.forEach(v => stocks.push(v));
-            console.log("printing stocks in here ");
-            console.log(stocks);
-            console.log(Object.keys(leaders).length, count );
+            // console.log("printing stocks in here ");
+            // console.log(stocks);
+            // console.log(Object.keys(leaders).length, count );
             if (Object.keys(leaders).length == count) {
               fetchUserStocks(function(userStocks) {
                 generateLeaderBoardSuggestions(Object.keys(userStocks), stocks);
@@ -481,14 +493,16 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
 
     $rootScope.beginBuy = function() {
       console.log("made it");
-
-      $rootScope.bot(trendingStockSuggestions, stockSuggestions);
-      $('#buyModal').modal('show');
+      // if (isTrendingStock($rootScope.compName.toUpperCase())) {
+        $rootScope.bot(trendingStockSuggestions, stockSuggestions);
+        $('#buyModal').modal('show');
+      // }
       // document.getElementById("#buyModal").showModal();
     }
 
+
     $rootScope.showBuy = function() {
-      console.log("made it");
+      // console.log("made it");
       $('#botModal').modal('hide');
       $('#buyModal').modal('show');
     }
