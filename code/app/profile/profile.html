@@ -17,12 +17,11 @@
 			<li ng-show="companies" class="list-group-item"><h4>Companies Whose Shares {{youOrThey}} Own</h4></li>
 			<li ng-show="noCompanies" class="list-group-item text-center"><h4>{{whoHasNoCompanies}}</h4></li>
 			<li ng-show="noCompanies" class="list-group-item text-center"><img src="StockMockLogoFull.png" class="img-responsive"></li>
-			<li ng-repeat="(key, value) in companies" class="list-group-item">
+			<li ng-repeat="(key,value) in companies" class="list-group-item">
 				<div class="row responsive">
 					<div class="col col-lg-6">
-						<span><h4><a href="" ng-click="viewComp(key)">{{key}}</a></h4><h4>{{value | currency}}</h4></span>
-
-						<h7>{{value}} Shares</h7>
+						<span><h4><a href="" ng-click="viewComp(key)">{{key}}</a></h4><h4>{{elements(value) | currency}}</h4></span>
+						<h7>{{keys(value)}} Shares</h7>
 					</div>
 				</div>
 			</li>
