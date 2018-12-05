@@ -12,6 +12,7 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
 .controller('ProfileCtrl', function($scope, $rootScope, $cookieStore, $timeout, $interval, $routeParams) {
   $rootScope.loggedIn = $cookieStore.get('loggedIn');
   $rootScope.loggedInUser = $cookieStore.get('loggedInUser');
+
   if (!$rootScope.loggedIn) {
     window.location.href = '#!/login';
   }
@@ -29,11 +30,11 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
   $scope.search = function() {
     if($rootScope.companyName == undefined ||
       $rootScope.companyName == '') {
-      $rootScope.error("Hey buddy! You need to enter a symbol to search for!");
+      $rootScope.error("Hey buddy! You need to enter something to search for!");
       return;
     }
     else if($rootScope.companyName.length > 128) {
-      $rootScope.error("You can't search for a company longer than 128 characters.");
+      $rootScope.error("You can't search anything longer than 128 characters.");
       return;
     }
     else {
@@ -45,11 +46,19 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
     firebase.database().ref("user").once('value').then(function(snapshot) {
       let users = snapshot.toJSON();
 
-      if (doesUsernameExist(users)) {
-        window.location.href = "#!/myprofile?"+$rootScope.companyName;
+      var searchOption = $('#searchRadios input:radio:checked').val()
+      console.log(searchOption)
+
+      if (searchOption == "user" && doesUsernameExist(users)) {
+        window.location.href = "#!/myprofile?id="+$rootScope.queriedUserId;
+      }
+      else if (searchOption == "stock") {
+       $rootScope.companyName = $rootScope.companyName.toUpperCase();
+       console.log($rootScope.companyName);
+       window.location.href = "#!/viewSearch?"+$rootScope.companyName;
       }
       else {
-       window.location.href = "#!/viewSearch?"+$rootScope.companyName;
+        $rootScope.error("User does not exist, please try again.");
       }
     });
   }
@@ -58,13 +67,17 @@ angular.module('myApp.profile', ['ngRoute', 'ngCookies'])
     let queriedUsername = $rootScope.companyName;
 
     for (let user in users) {
-      if (users[user].username == queriedUsername)
+      if (users[user].username == queriedUsername) {
+        // set this equal to queried users id
+        $rootScope.queriedUserId = user;
         return true;
+      }
     }
     return false;
   }
 
   $scope.viewComp = function(key) {
+    debugger;
     window.location.href = "#!/viewSearch?"+key;
   }
 
