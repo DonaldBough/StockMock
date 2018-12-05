@@ -302,7 +302,7 @@ angular.module('myApp.viewSearch', ['ngRoute', 'ngCookies'])
           $rootScope.data = data;
           $rootScope.searchInProgress = false;
 
-          window.onload = $rootScope.error('Uh oh... it looks like \"'+$rootScope.companyName+'\" does not exist.');
+          window.onload = $rootScope.error('We didnt find anything for \"'+$rootScope.companyName+'\". You might have meant to search for a user, or have searched for too many companies recently.');
 
           $rootScope.companyName = '';
         }
