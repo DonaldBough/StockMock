@@ -1,23 +1,121 @@
-
 <html>
+
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Forum</h1>
+            </div>
+        </div>
+        <div id="body">
+            <h2>Finance</h2>
+            <li ng-repeat="(key,value) in empty" class="list-group-item">
+                <div class="row responsive">
+                    <div class="col col-lg-6">
+                    </div>
+                </div>
+            </li>
+            <h3 class="list-group-item">Banking</h3>
+            <li ng-repeat="(key,value) in banking" class="list-group-item">
+                <div class="row responsive">
+                    <div class="col col-lg-12">
+                        <h4>{{Description(key)}}</h4>
+                        <p><b>Posted by:</b> {{poster(value)}} <b>Date added:</b> {{date}} <b>Number of Replies:</b> {{noOfReplies(value)}}</p>
+                        <p class="list-group-item"><b>Replies:</b></p>
+                        <div class="list-group-item">
+                            <div ng-repeat="(keys,values) in replies(value)">
+                                <p>{{keys}}: {{values}}</p>
+                            </div>
+                            <div id="{{newID(key)}}" hidden>
+                                <p>Reply: <input id="{{getID(key)}}" style="width:400px;"> &nbsp;&nbsp;&nbsp; Name: <input style="width:200px;" id="{{getOtherID(key)}}" rows="1" cols="10">
+                                    &nbsp;&nbsp;&nbsp; <button ng-click="getDOMID(getID(key), getOtherID(key))"><b>Reply</b></button></p>
+                            </div>
+                            <button id="{{buttonID(key)}}" ng-click="toggleHide(newID(key), buttonID(key))">Reply to this Post</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <div class="list-group-item">
+                <div id="newPostBanking" hidden>
+                    <p>New Post:</p>
+                    <input id="banking" style="width:500px; height:50px;" rows="2" cols="100"> <br />
+                    <p>Name displayed on post: <input id="bankU"></p>
+                    <button onclick="addPost('banking', 'bankU')"><b>Create New Post</b></button>
+                </div>
+                <button id="postButtonBanking" ng-click="toggleHide('newPostBanking', 'postButtonBanking')"> <b>Create New Post</b> </button>
+            </div>
+            <h2>Stocks</h2>
+            <li ng-repeat="(key,value) in empty" class="list-group-item">
+                <div class="row responsive">
+                    <div class="col col-lg-12">
+                    </div>
+                </div>
+            </li>
+            <h3 class="list-group-item">Day Trading</h3>
+            <li ng-repeat="(key,value) in dayTrading" class="list-group-item">
+                <div class="row responsive">
+                    <div class="col col-lg-12">
+                        <h4>{{Description(key)}}</h4>
+                        <p><b>Posted by:</b> {{poster(value)}} <b>Date added:</b> {{date}} <b>Number of Replies:</b> {{noOfReplies(value)}}</p>
+                        <p class="list-group-item"><b>Replies:</b></p>
+                        <div class="list-group-item">
+                            <div ng-repeat="(keys,values) in replies(value)">
+                                <p>{{keys}}: {{values}}</p>
+                            </div>
+                            <div id="{{newID(key)}}" hidden>
+                                <p>Reply: <input id="{{getID(key)}}" style="width:400px;"> &nbsp;&nbsp;&nbsp; Name: <input style="width:200px;" id="{{getOtherID(key)}}" rows="1" cols="10">
+                                    &nbsp;&nbsp;&nbsp; <button ng-click="getDOMID(getID(key), getOtherID(key))"><b>Reply</b></button></p>
+                            </div>
+                            <button id="{{buttonID(key)}}" ng-click="toggleHide(newID(key), buttonID(key))">Reply to this Post</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <div class="list-group-item">
+                <div id="newPostDT" hidden>
+                    <p>New Post:</p>
+                    <input id="dayTrading" style="width:500px; height:50px;" rows="2" cols="100"> <br />
+                    <p>Name displayed on post: <input id="DTU"></p>
+                    <button onclick="addPost('dayTrading', 'DTU')"><b>Create New Post</b></button>
+                </div>
+                <button id="postButtonDT" ng-click="toggleHide('newPostDT', 'postButtonDT')"><b>Create New Post</b></button>
+            </div>
+            <h3 class="list-group-item">Mutual Funds</h3>
+            <li ng-repeat="(key,value) in mutualFunds" class="list-group-item">
+                <div class="row responsive">
+                    <div class="col col-lg-12">
+                        <h4>{{Description(key)}}</h4>
+                        <p><b>Posted by:</b> {{poster(value)}} <b>Date added:</b> {{date}} <b>Number of Replies:</b> {{noOfReplies(value)}}</p>
+                        <p class="list-group-item"><b>Replies:</b></p>
+                        <div class="list-group-item">
+                            <div ng-repeat="(keys,values) in replies(value)">
+                                <p>{{keys}}: {{values}}</p>
+                            </div>
+                            <div id="{{newID(key)}}" hidden>
+                                <p>Reply: <input id="{{getID(key)}}" style="width:400px;"> &nbsp;&nbsp;&nbsp; Name: <input style="width:200px;" id="{{getOtherID(key)}}" rows="1" cols="10">
+                                    &nbsp;&nbsp;&nbsp; <button ng-click="getDOMID(getID(key), getOtherID(key))"><b>Reply</b></button></p>
+                            </div>
+                            <button id="{{buttonID(key)}}" ng-click="toggleHide(newID(key), buttonID(key))">Reply to this Post</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <div class="list-group-item">
+                <div id="newPostMF" hidden>
+                    <p>New Post:</p>
+                    <input id="mutualFunds" style="width:500px; height:50px;" rows="2" cols="100"> <br />
+                    <p>Name displayed on post: <input id="MFU"></p>
+                    <button onclick="addPost('mutualFunds', 'MFU')"><b>Create New Post</b></button>
+                </div>
+                <button id="postButtonMF" ng-click="toggleHide('newPostMF', 'postButtonMF')"><b>Create New Post</b></button>
+            </div>
+        </div>
+        <h3>Number of Posts: {{countOfPosts()}}</h3>
+        <h3>Posters: {{usersTable()}}</h3>
+    </div>
+
+    <br /><br /><br /><br />
 
 </body>
+
 </html>
-<div class="container">
-
-    <div class="row">
-
-        <div class="col-lg-12">
-            <h1 class="page-header">Forum
-            </h1>
-        </div>
-        </div>
-<!-- Tutorial Video link -->
-        <div class="row responsive text-center">
-        <center>
-            <script type="text/javascript" src="http://7imln2pf80.embed.talkiforum.com/embed/1.js"></script>
-            <div style="font-size:80%; text-align:center;" id="7imln2pf80t4lk1prm0"></div>
-        </center>
-        </div>
-</div>
