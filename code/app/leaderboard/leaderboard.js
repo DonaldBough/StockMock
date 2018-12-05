@@ -46,7 +46,7 @@ angular.module('myApp.leaderboard', ['ngRoute', 'ngCookies']) //'ngSanitize'
           <tr>
               <td>${lol}</td>
               <td>
-                <a href="#!/profile?id=${key}">
+                <a href="#!/myprofile?id=${key}">
                   ${value[0]}
                 </a>
               </td>
