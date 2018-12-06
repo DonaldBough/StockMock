@@ -18,7 +18,7 @@ describe('StockMock Login', function() {
 	element.all(by.model('username')).first().sendKeys('user5@test.com');
 	element.all(by.model('oldPassword')).first().sendKeys('hellohello');
 	element.all(by.model('newPassword')).first().sendKeys('hellohello');
-	element(by.name('submit')).click();
+	element(by.name('submit2')).click();
 	  
 	browser.sleep(2000);
 	expect(element(by.name('errorMessage')).getText()).toEqual("Looks like you typed your username or password incorrectly. Please try again.");
@@ -30,7 +30,7 @@ describe('StockMock Login', function() {
 	element.all(by.model('username')).first().sendKeys('user5@test.com');
 	element.all(by.model('oldPassword')).first().sendKeys('hellothere');
 	element.all(by.model('newPassword')).first().sendKeys('1234567');
-	element(by.name('submit')).click();
+	element(by.name('submit2')).click();
 	  
 	browser.sleep(2000);
 	expect(element(by.name('errorMessage')).getText()).toEqual("Please enter a password that is between 8 and 30 characters.");
@@ -42,7 +42,7 @@ describe('StockMock Login', function() {
 	element.all(by.model('username')).first().sendKeys('user5@test.com');
 	element.all(by.model('oldPassword')).first().sendKeys('hellothere');
 	element.all(by.model('newPassword')).first().sendKeys('1234567890123456789012345678901');
-	element(by.name('submit')).click();
+	element(by.name('submit2')).click();
 	  
 	browser.sleep(2000);
 	expect(element(by.name('errorMessage')).getText()).toEqual("Please enter a password that is between 8 and 30 characters.");
@@ -54,7 +54,7 @@ describe('StockMock Login', function() {
 	element.all(by.model('username')).first().sendKeys('user5@test.com');
 	element.all(by.model('oldPassword')).first().sendKeys('hellothere');
 	element.all(by.model('newPassword')).first().sendKeys('hellohello');
-	element(by.name('submit')).click();
+	element(by.name('submit2')).click();
 	  
 	browser.sleep(2000);
 	expect(element(by.name('errorMessage')).getText()).toEqual("Your password has been successfully updated. Don't forget it!");
@@ -88,7 +88,7 @@ describe('StockMock Login', function() {
 	  element.all(by.model('username')).first().sendKeys('user5@test.com');
 	  element.all(by.model('oldPassword')).first().sendKeys('hellohello');
 	  element.all(by.model('newPassword')).first().sendKeys('hellothere');
-	  element(by.name('submit')).click();
+	  element(by.name('submit2')).click();
 	  
 	  browser.sleep(2000);
 	  expect(element(by.name('errorMessage')).getText()).toEqual("Your password has been successfully updated. Don't forget it!");
