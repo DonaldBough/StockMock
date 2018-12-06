@@ -42,135 +42,6 @@ describe('StockMock Banking', function() {
 	});
   });
 
-  it('should deposit $10', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('depositAmount')).sendKeys('10');
-    element(by.name('depositSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal2).not.toEqual(bal);
-    });
-  });
-  });
-
-  it('should deposit $50', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('depositAmount')).sendKeys('50');
-    element(by.name('depositSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal2).not.toEqual(bal);
-    });
-  });
-  });
-
-  it('should deposit $100', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('depositAmount')).sendKeys('100');
-    element(by.name('depositSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal2).not.toEqual(bal);
-    });
-  });
-  });
-
-  it('should deposit $500', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('depositAmount')).sendKeys('500');
-    element(by.name('depositSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal2).not.toEqual(bal);
-    });
-  });
-  });
-
-  it('should deposit $1000', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('depositAmount')).sendKeys('1000');
-    element(by.name('depositSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal2).not.toEqual(bal);
-    });
-  });
-  });
 
   it('should withdraw $1', function() {
 	var bal;
@@ -198,135 +69,6 @@ describe('StockMock Banking', function() {
 	});
   });
 
-  it('should withdraw $10', function() {
-	var bal;
-	element(by.name('balance')).getText().then(function(text) {
-		bal = text.substring(text.indexOf(":")+2, text.length);
-
-		element(by.model('withdrawAmount')).sendKeys('10');
-		element(by.name('withdrawSubmit')).click();
-
-		browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-		expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
-		browser.switchTo().alert().accept();
-
-		browser.sleep(2000);
-		expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-		element(by.name('thanks')).click();
-		browser.sleep(2000);
-
-		var bal2;
-		element(by.name('balance')).getText().then(function(text2) {
-			bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-			expect(bal).not.toEqual(bal2);
-		});
-	});
-  });
-
-  it('should withdraw $50', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('withdrawAmount')).sendKeys('50');
-    element(by.name('withdrawSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal).not.toEqual(bal2);
-    });
-  });
-  });
-
-  it('should withdraw $100', function() {
-	var bal;
-	element(by.name('balance')).getText().then(function(text) {
-		bal = text.substring(text.indexOf(":")+2, text.length);
-
-		element(by.model('withdrawAmount')).sendKeys('100');
-		element(by.name('withdrawSubmit')).click();
-
-		browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-		expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
-		browser.switchTo().alert().accept();
-
-		browser.sleep(2000);
-		expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-		element(by.name('thanks')).click();
-		browser.sleep(2000);
-
-		var bal2;
-		element(by.name('balance')).getText().then(function(text2) {
-			bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-			expect(bal).not.toEqual(bal2);
-		});
-	});
-  });
-
-  it('should withdraw $500', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('withdrawAmount')).sendKeys('1');
-    element(by.name('withdrawSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal).not.toEqual(bal2);
-    });
-  });
-  });
-
-  it('should withdraw $1000', function() {
-  var bal;
-  element(by.name('balance')).getText().then(function(text) {
-    bal = text.substring(text.indexOf(":")+2, text.length);
-
-    element(by.model('withdrawAmount')).sendKeys('1000');
-    element(by.name('withdrawSubmit')).click();
-
-    browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
-    expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
-    browser.switchTo().alert().accept();
-
-    browser.sleep(2000);
-    expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
-    element(by.name('thanks')).click();
-    browser.sleep(2000);
-
-    var bal2;
-    element(by.name('balance')).getText().then(function(text2) {
-      bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
-
-      expect(bal).not.toEqual(bal2);
-    });
-  });
-  });
 
   it('should reject withdraw too much money', function() {
 	element(by.model('withdrawAmount')).sendKeys('1501');
@@ -376,4 +118,264 @@ describe('StockMock Banking', function() {
 	element(by.name('logout')).click();
   });
 
+});
+
+it('should deposit $10', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('depositAmount')).sendKeys('10');
+  element(by.name('depositSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal2).not.toEqual(bal);
+  });
+});
+});
+
+it('should deposit $50', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('depositAmount')).sendKeys('50');
+  element(by.name('depositSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal2).not.toEqual(bal);
+  });
+});
+});
+
+it('should deposit $100', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('depositAmount')).sendKeys('100');
+  element(by.name('depositSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal2).not.toEqual(bal);
+  });
+});
+});
+
+it('should deposit $500', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('depositAmount')).sendKeys('500');
+  element(by.name('depositSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal2).not.toEqual(bal);
+  });
+});
+});
+
+it('should deposit $1000', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('depositAmount')).sendKeys('1000');
+  element(by.name('depositSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to deposit $1 to the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal2).not.toEqual(bal);
+  });
+});
+});
+
+it('should withdraw $10', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('withdrawAmount')).sendKeys('10');
+  element(by.name('withdrawSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal).not.toEqual(bal2);
+  });
+});
+});
+
+it('should withdraw $50', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('withdrawAmount')).sendKeys('50');
+  element(by.name('withdrawSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal).not.toEqual(bal2);
+  });
+});
+});
+
+it('should withdraw $100', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('withdrawAmount')).sendKeys('100');
+  element(by.name('withdrawSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal).not.toEqual(bal2);
+  });
+});
+});
+
+it('should withdraw $500', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('withdrawAmount')).sendKeys('1');
+  element(by.name('withdrawSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal).not.toEqual(bal2);
+  });
+});
+});
+
+it('should withdraw $1000', function() {
+var bal;
+element(by.name('balance')).getText().then(function(text) {
+  bal = text.substring(text.indexOf(":")+2, text.length);
+
+  element(by.model('withdrawAmount')).sendKeys('1000');
+  element(by.name('withdrawSubmit')).click();
+
+  browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000);
+  expect(browser.switchTo().alert().getText()).toEqual("Are you sure you want to withdraw $1 from the bank?");
+  browser.switchTo().alert().accept();
+
+  browser.sleep(2000);
+  expect(element(by.name('errorMessage')).getText()).toEqual("Yay! Your funds were successfully transferred!");
+  element(by.name('thanks')).click();
+  browser.sleep(2000);
+
+  var bal2;
+  element(by.name('balance')).getText().then(function(text2) {
+    bal2 = text2.substring(text2.indexOf(":")+2, text2.length);
+
+    expect(bal).not.toEqual(bal2);
+  });
+});
 });
