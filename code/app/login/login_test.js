@@ -102,7 +102,7 @@ describe('StockMock Login', function() {
 	element(by.name('thanks')).click();
   });
 
-  it('should deny too long password', function() {
+  /*it('should deny too long password', function() {
     browser.get('http://127.0.0.1:60788/app/index.html#!/login');
 
 	element.all(by.model('create_realusername')).sendKeys('blahblahblah');
@@ -130,8 +130,8 @@ describe('StockMock Login', function() {
 	browser.sleep(2000);
 	expect(element(by.name('errorMessage')).getText()).toEqual("Oops! Looks like those passwords don't match. Please try typing them in again.");
 	element(by.name('thanks')).click();
-	});
-	
+	});*/
+	/*
 	it('should successfully sign up', function() {
     browser.get('http://127.0.0.1:60788/app/index.html#!/login');
 
@@ -169,5 +169,5 @@ describe('StockMock Login', function() {
 	element(by.name('account')).click();
 	element(by.name('logout')).click();
 	
-  });
+  });*/
 });
