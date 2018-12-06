@@ -9,6 +9,7 @@ describe('StockMock Banking', function() {
 	expect(browser.getCurrentUrl()).toContain("profile");
 	expect(element(by.name('greeting')).getText()).toEqual('Hello user5@test.com!');
 
+  element(by.name('tools')).click();
 	element(by.name('banking')).click();
 
 	expect(browser.getCurrentUrl()).toContain("banking");
