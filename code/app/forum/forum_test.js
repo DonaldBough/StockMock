@@ -38,5 +38,7 @@ describe('StockMock Forum', function() {
   it('Should log out', function() {
     element(by.name('account')).click();
     element(by.name('logout')).click();
+
+    expect(browser.getCurrentUrl()).toContain("login");
   });
 });
